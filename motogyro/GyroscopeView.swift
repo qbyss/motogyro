@@ -29,9 +29,6 @@ struct GyroscopeView: View {
                     isLocationAvailable: locationManager.isLocationAvailable
                 )
                 .padding(.top, 20)
-                .onTapGesture {
-                    showSpeedSettings.toggle()
-                }
 
                 Spacer()
                     .frame(height: 40)
@@ -62,14 +59,14 @@ struct GyroscopeView: View {
                         maxLeanRight: motionManager.maxLeanRight
                     )
 
-                    HStack(spacing: 15) {
+                    HStack(spacing: 20) {
                         Button(action: {
                             motionManager.calibrate()
                         }) {
                             Text("CALIBRATE")
                                 .font(.system(size: 16, weight: .bold))
                                 .foregroundColor(.white)
-                                .padding(.horizontal, 20)
+                                .padding(.horizontal, 30)
                                 .padding(.vertical, 12)
                                 .background(Color.blue)
                                 .cornerRadius(10)
@@ -82,25 +79,34 @@ struct GyroscopeView: View {
                             Text("RESET")
                                 .font(.system(size: 16, weight: .bold))
                                 .foregroundColor(.white)
-                                .padding(.horizontal, 25)
+                                .padding(.horizontal, 40)
                                 .padding(.vertical, 12)
                                 .background(Color.red)
-                                .cornerRadius(10)
-                        }
-
-                        Button(action: {
-                            showSpeedSettings.toggle()
-                        }) {
-                            Image(systemName: "gearshape.fill")
-                                .font(.system(size: 20))
-                                .foregroundColor(.white)
-                                .padding(12)
-                                .background(Color.gray)
                                 .cornerRadius(10)
                         }
                     }
                 }
                 .padding(.bottom, 50)
+            }
+            // Settings button in top-right corner
+            VStack {
+                HStack {
+                    Spacer()
+                    Button(action: {
+                        showSpeedSettings.toggle()
+                    }) {
+                        Image(systemName: "gearshape.fill")
+                            .font(.system(size: 24))
+                            .foregroundColor(.white)
+                            .padding(12)
+                            .background(Color.gray.opacity(0.8))
+                            .clipShape(Circle())
+                            .shadow(radius: 3)
+                    }
+                    .padding(.top, 20)
+                    .padding(.trailing, 20)
+                }
+                Spacer()
             }
         }
         .persistentSystemOverlays(.hidden)
