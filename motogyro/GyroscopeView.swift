@@ -140,15 +140,20 @@ struct HorizonGraduationMark: View {
     let size: CGFloat
 
     var body: some View {
-        // Create a VERTICAL line by rotating a horizontal rectangle 90 degrees
-        let markLength: CGFloat = abs(offset) >= 100 ? 60 : 45
-        let markThickness: CGFloat = 4
+        // Draw a VERTICAL line perpendicular to the horizon
+        let markLength: CGFloat = abs(offset) >= 100 ? 30 : 20  // extends above and below horizon
 
-        Rectangle()
-            .fill(Color.white)
-            .frame(width: markLength, height: markThickness)
-            .rotationEffect(.degrees(90))  // Rotate 90 degrees to make it VERTICAL
-            .offset(x: CGFloat(offset), y: 0)
+        Path { path in
+            // Vertical line at horizontal position 'offset'
+            // Line goes from top to bottom (Y-axis)
+            let x = CGFloat(offset)
+            let yStart = -markLength / 2  // Above horizon
+            let yEnd = markLength / 2     // Below horizon
+
+            path.move(to: CGPoint(x: x, y: yStart))
+            path.addLine(to: CGPoint(x: x, y: yEnd))
+        }
+        .stroke(Color.white, lineWidth: 3)
     }
 }
 
