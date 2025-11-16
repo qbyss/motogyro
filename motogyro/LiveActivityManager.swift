@@ -16,6 +16,9 @@ class LiveActivityManager: ObservableObject {
 
     // Start the Live Activity
     func startActivity() {
+        print("📱 startActivity() called")
+        print("📱 Activities enabled: \(ActivityAuthorizationInfo().areActivitiesEnabled)")
+
         guard ActivityAuthorizationInfo().areActivitiesEnabled else {
             print("📱 Live Activities are not enabled")
             return
@@ -23,7 +26,7 @@ class LiveActivityManager: ObservableObject {
 
         // Don't start if already active
         if currentActivity != nil {
-            print("📱 Live Activity already active")
+            print("📱 Live Activity already active, ID: \(currentActivity?.id ?? "unknown")")
             return
         }
 
@@ -37,6 +40,8 @@ class LiveActivityManager: ObservableObject {
             isTracking: false
         )
 
+        print("📱 Attempting to request Live Activity...")
+
         do {
             currentActivity = try Activity.request(
                 attributes: attributes,
@@ -44,9 +49,11 @@ class LiveActivityManager: ObservableObject {
                 pushType: nil
             )
             isActivityActive = true
-            print("📱 Live Activity started successfully")
+            print("📱 Live Activity started successfully! ID: \(currentActivity?.id ?? "unknown")")
+            print("📱 Activity state: \(currentActivity?.activityState.rawValue ?? "unknown")")
         } catch {
-            print("📱 Error starting Live Activity: \(error.localizedDescription)")
+            print("📱 Error starting Live Activity: \(error)")
+            print("📱 Error details: \(error.localizedDescription)")
         }
     }
 
