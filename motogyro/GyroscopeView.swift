@@ -137,18 +137,17 @@ struct AngleScaleView: View {
                 ArcLine(radius: arcRadius)
                     .stroke(Color.black, lineWidth: 3)
 
-                // Graduation marks every 5 degrees
-                ForEach(Array(stride(from: -50, through: 50, by: 5)), id: \.self) { angle in
+                // Graduation marks every 10 degrees
+                ForEach(Array(stride(from: -50, through: 50, by: 10)), id: \.self) { angle in
                     ScaleMarkView(
                         angle: angle,
                         radius: arcRadius,
-                        isMajor: angle % 10 == 0,
-                        isLabeled: [0, 10, 20, 30, 40, 50, -10, -20, -30, -40, -50].contains(angle)
+                        size: size
                     )
                 }
 
-                // Angle labels
-                ForEach([0, 10, 20, 30, 40, 50, -10, -20, -30, -40, -50], id: \.self) { angle in
+                // Only show 50° labels at maximum
+                ForEach([-50, 50], id: \.self) { angle in
                     AngleLabelView(
                         angle: angle,
                         radius: arcRadius,
@@ -186,28 +185,27 @@ struct ArcLine: Shape {
 struct ScaleMarkView: View {
     let angle: Int
     let radius: CGFloat
-    let isMajor: Bool
-    let isLabeled: Bool
+    let size: CGFloat
 
     var body: some View {
-        GeometryReader { geometry in
-            let size = min(geometry.size.width, geometry.size.height)
-            let center = CGPoint(x: size / 2, y: size / 2)
+        let angleInRadians = Double(angle) * .pi / 180.0
+        let center = CGPoint(x: size / 2, y: size / 2)
 
-            // Convert angle to position on arc
-            let angleInRadians = Double(angle) * .pi / 180.0
-            let x = center.x + radius * sin(angleInRadians)
-            let y = center.y - radius * cos(angleInRadians)
+        // Position on the arc
+        let arcX = center.x + radius * sin(angleInRadians)
+        let arcY = center.y - radius * cos(angleInRadians)
 
-            let markHeight: CGFloat = isLabeled ? 25 : (isMajor ? 18 : 12)
+        // Position for the inner end of the mark (pointing toward center)
+        let markLength: CGFloat = 20
+        let innerRadius = radius - markLength
+        let innerX = center.x + innerRadius * sin(angleInRadians)
+        let innerY = center.y - innerRadius * cos(angleInRadians)
 
-            // Draw mark pointing inward (toward circle center)
-            Rectangle()
-                .fill(Color.black)
-                .frame(width: 2.5, height: markHeight)
-                .position(x: x, y: y - markHeight / 2)
-                .rotationEffect(.degrees(Double(angle)), anchor: UnitPoint(x: 0.5, y: 1))
+        Path { path in
+            path.move(to: CGPoint(x: arcX, y: arcY))
+            path.addLine(to: CGPoint(x: innerX, y: innerY))
         }
+        .stroke(Color.black, lineWidth: 2.5)
     }
 }
 
@@ -218,13 +216,15 @@ struct AngleLabelView: View {
 
     var body: some View {
         let angleInRadians = Double(angle) * .pi / 180.0
-        // Position labels outside the arc (further from center)
-        let labelRadius = radius + 35
-        let x = labelRadius * sin(angleInRadians) + size / 2
-        let y = -labelRadius * cos(angleInRadians) + size / 2
+        let center = CGPoint(x: size / 2, y: size / 2)
 
-        Text("\(abs(angle))°")
-            .font(.system(size: 16, weight: .bold))
+        // Position labels outside the arc (further from center)
+        let labelRadius = radius + 30
+        let x = center.x + labelRadius * sin(angleInRadians)
+        let y = center.y - labelRadius * cos(angleInRadians)
+
+        Text("50°")
+            .font(.system(size: 18, weight: .bold))
             .foregroundColor(.black)
             .position(x: x, y: y)
     }
