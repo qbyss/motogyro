@@ -72,7 +72,7 @@ struct HorizonSphereView: View {
             let size = min(geometry.size.width, geometry.size.height)
 
             ZStack {
-                // Sky and ground hemispheres
+                // Sky and ground hemispheres with graduations
                 ZStack {
                     // Sky (blue) - top half
                     Circle()
@@ -110,10 +110,19 @@ struct HorizonSphereView: View {
                     Rectangle()
                         .fill(Color.white)
                         .frame(width: size * 0.95, height: 3)
+
+                    // Horizon graduation marks (every 10 degrees)
+                    ForEach([-60, -45, -30, -20, -10, 10, 20, 30, 45, 60], id: \.self) { angle in
+                        HorizonGraduationMark(angle: angle, size: size)
+                    }
                 }
                 .rotationEffect(.degrees(-rollAngle)) // Counter-rotate to keep level
                 .clipShape(Circle())
                 .frame(width: size * 0.95, height: size * 0.95)
+
+                // Fixed airplane symbol (stays centered, doesn't rotate)
+                AirplaneSymbol()
+                    .frame(width: size * 0.4, height: size * 0.15)
 
                 // Outer circle border (dark for visibility on white background)
                 Circle()
@@ -122,6 +131,52 @@ struct HorizonSphereView: View {
             }
             .frame(width: size, height: size)
             .position(x: geometry.size.width / 2, y: geometry.size.height / 2)
+        }
+    }
+}
+
+struct HorizonGraduationMark: View {
+    let angle: Int
+    let size: CGFloat
+
+    var body: some View {
+        let markHeight: CGFloat = abs(angle) % 30 == 0 ? 15 : 10
+        let markWidth: CGFloat = 2.5
+        let horizonRadius = size * 0.475
+
+        Rectangle()
+            .fill(Color.white)
+            .frame(width: markWidth, height: markHeight)
+            .offset(x: horizonRadius * sin(Double(angle) * .pi / 180.0))
+            .offset(y: -markHeight / 2)
+    }
+}
+
+struct AirplaneSymbol: View {
+    var body: some View {
+        ZStack {
+            // Center dot
+            Circle()
+                .fill(Color.orange)
+                .frame(width: 12, height: 12)
+
+            // Left wing
+            RoundedRectangle(cornerRadius: 2)
+                .fill(Color.orange)
+                .frame(width: 60, height: 8)
+                .offset(x: -35, y: 0)
+
+            // Right wing
+            RoundedRectangle(cornerRadius: 2)
+                .fill(Color.orange)
+                .frame(width: 60, height: 8)
+                .offset(x: 35, y: 0)
+
+            // Center vertical line
+            RoundedRectangle(cornerRadius: 2)
+                .fill(Color.orange)
+                .frame(width: 8, height: 20)
+                .offset(y: 10)
         }
     }
 }
