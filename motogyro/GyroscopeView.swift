@@ -12,7 +12,7 @@ struct GyroscopeView: View {
     @StateObject private var motionManager = MotionManager()
     @StateObject private var locationManager = LocationManager()
     @State private var showSpeedSettings = false
-    @State private var speedThresholdEnabled = true
+    @State private var speedThresholdEnabled = false
 
     var body: some View {
         ZStack {
@@ -28,7 +28,7 @@ struct GyroscopeView: View {
                     isTracking: motionManager.isTrackingEnabled,
                     isLocationAvailable: locationManager.isLocationAvailable
                 )
-                .padding(.top, 50)
+                .padding(.top, 20)
                 .onTapGesture {
                     showSpeedSettings.toggle()
                 }
@@ -109,8 +109,8 @@ struct GyroscopeView: View {
             )
         }
         .onAppear {
-            // Load saved preference
-            speedThresholdEnabled = UserDefaults.standard.object(forKey: "speedThresholdEnabled") as? Bool ?? true
+            // Load saved preference (default to false for debugging)
+            speedThresholdEnabled = UserDefaults.standard.object(forKey: "speedThresholdEnabled") as? Bool ?? false
             locationManager.startTracking()
             updateTrackingState()
         }
@@ -434,8 +434,8 @@ struct SpeedDisplay: View {
     let isLocationAvailable: Bool
 
     var body: some View {
-        VStack(spacing: 8) {
-            HStack(spacing: 15) {
+        VStack(spacing: 6) {
+            HStack(spacing: 30) {
                 // Current speed
                 VStack(spacing: 4) {
                     Text("SPEED")
@@ -464,31 +464,19 @@ struct SpeedDisplay: View {
                         .font(.system(size: 12, weight: .medium))
                         .foregroundColor(.gray)
                 }
-
-                Divider()
-                    .frame(height: 60)
-
-                // Tracking status
-                VStack(spacing: 4) {
-                    Text("TRACKING")
-                        .font(.system(size: 14, weight: .bold))
-                        .foregroundColor(.gray)
-                    Image(systemName: isTracking ? "checkmark.circle.fill" : "xmark.circle.fill")
-                        .font(.system(size: 32))
-                        .foregroundColor(isTracking ? .green : .red)
-                }
             }
 
             if !isLocationAvailable {
                 Text("GPS Not Available - Enable Location Services")
-                    .font(.system(size: 12, weight: .medium))
+                    .font(.system(size: 11, weight: .medium))
                     .foregroundColor(.red)
-                    .padding(.top, 4)
+                    .padding(.top, 2)
             }
         }
-        .padding()
-        .background(Color.gray.opacity(0.15))
-        .cornerRadius(15)
+        .padding(.vertical, 12)
+        .padding(.horizontal, 20)
+        .background(isTracking ? Color.green.opacity(0.2) : Color.red.opacity(0.2))
+        .cornerRadius(12)
         .padding(.horizontal)
     }
 }

@@ -72,7 +72,13 @@ class LocationManager: NSObject, ObservableObject {
         if speedThreshold == 0 {
             speedThreshold = 10.0 // Default to 10 km/h
         }
-        useMetric = UserDefaults.standard.bool(forKey: "useMetric")
+
+        // Default to metric (true) if not set
+        if UserDefaults.standard.object(forKey: "useMetric") != nil {
+            useMetric = UserDefaults.standard.bool(forKey: "useMetric")
+        } else {
+            useMetric = true // Default to metric for Europe
+        }
 
         // Configure location manager
         locationManager.delegate = self
