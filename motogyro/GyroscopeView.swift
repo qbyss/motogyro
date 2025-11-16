@@ -86,21 +86,16 @@ struct GyroscopeView: View {
                         }
                     }
 
-                    // Settings button
+                    // Settings cogwheel button
                     Button(action: {
                         showSpeedSettings.toggle()
                     }) {
-                        HStack(spacing: 8) {
-                            Image(systemName: "gearshape.fill")
-                                .font(.system(size: 16))
-                            Text("Settings")
-                                .font(.system(size: 16, weight: .bold))
-                        }
-                        .foregroundColor(.white)
-                        .padding(.horizontal, 20)
-                        .padding(.vertical, 12)
-                        .background(Color.gray)
-                        .cornerRadius(10)
+                        Image(systemName: "gearshape.fill")
+                            .font(.system(size: 20))
+                            .foregroundColor(.white)
+                            .padding(12)
+                            .background(Color.gray)
+                            .cornerRadius(10)
                     }
                     .padding(.top, 10)
                 }
