@@ -79,18 +79,22 @@ struct MotoGyroWidgetLiveActivity: Widget {
                     .padding(.top, 4)
                 }
             } compactLeading: {
-                Text("MOTO")
-                    .font(.caption2)
-                    .fontWeight(.bold)
+                Text("45")
+                    .font(.system(size: 14, weight: .bold))
                     .foregroundColor(.white)
+                    .padding(4)
+                    .background(Color.blue)
+                    .cornerRadius(4)
             } compactTrailing: {
-                Text("GYRO")
-                    .font(.caption2)
-                    .fontWeight(.bold)
+                Text("32°")
+                    .font(.system(size: 14, weight: .bold))
                     .foregroundColor(.white)
+                    .padding(4)
+                    .background(Color.green)
+                    .cornerRadius(4)
             } minimal: {
-                Text("🏍️")
-                    .font(.caption2)
+                Image(systemName: "circle.fill")
+                    .foregroundColor(.red)
             }
             .keylineTint(Color.red)
         }
