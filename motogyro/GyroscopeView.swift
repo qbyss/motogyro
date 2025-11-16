@@ -146,8 +146,8 @@ struct AngleScaleView: View {
                     )
                 }
 
-                // Only show 50° labels at maximum
-                ForEach([-50, 50], id: \.self) { angle in
+                // Show labels at 0° and ±50°
+                ForEach([-50, 0, 50], id: \.self) { angle in
                     AngleLabelView(
                         angle: angle,
                         radius: arcRadius,
@@ -223,7 +223,7 @@ struct AngleLabelView: View {
         let x = center.x + labelRadius * sin(angleInRadians)
         let y = center.y - labelRadius * cos(angleInRadians)
 
-        Text("50°")
+        Text(angle == 0 ? "0°" : "50°")
             .font(.system(size: 18, weight: .bold))
             .foregroundColor(.black)
             .position(x: x, y: y)
