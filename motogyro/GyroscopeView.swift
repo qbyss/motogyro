@@ -6,9 +6,15 @@
 //
 
 import SwiftUI
+import Combine
 
 struct GyroscopeView: View {
     @StateObject private var motionManager = MotionManager()
+    @StateObject private var locationManager = LocationManager()
+    @StateObject private var activityManager = ActivityManager()
+
+    @State private var cancellables = Set<AnyCancellable>()
+    @State private var liveActivityEnabled = false
 
     var body: some View {
         ZStack {
@@ -16,6 +22,25 @@ struct GyroscopeView: View {
                 .ignoresSafeArea()
 
             VStack(spacing: 20) {
+                // Speed and Live Activity toggle
+                VStack(spacing: 10) {
+                    Text("\(Int(locationManager.speed)) km/h")
+                        .font(.system(size: 32, weight: .bold))
+                        .foregroundColor(locationManager.isMoving ? .green : .gray)
+
+                    Toggle("Dynamic Island", isOn: $liveActivityEnabled)
+                        .font(.system(size: 16, weight: .semibold))
+                        .padding(.horizontal, 40)
+                        .onChange(of: liveActivityEnabled) { newValue in
+                            if newValue {
+                                activityManager.startActivity()
+                            } else {
+                                activityManager.endActivity()
+                            }
+                        }
+                }
+                .padding(.top, 30)
+
                 Spacer()
 
                 // Main gyroscope display
@@ -75,6 +100,37 @@ struct GyroscopeView: View {
         }
         .persistentSystemOverlays(.hidden)
         .statusBarHidden()
+        .onAppear {
+            // Request location permissions and start tracking
+            locationManager.requestPermissions()
+
+            // Update Live Activity whenever motion or location data changes
+            setupLiveActivityUpdates()
+        }
+        .onDisappear {
+            // End Live Activity when view disappears
+            if liveActivityEnabled {
+                activityManager.endActivity()
+            }
+        }
+    }
+
+    private func setupLiveActivityUpdates() {
+        // Combine publishers to update Live Activity
+        Timer.publish(every: 0.5, on: .main, in: .common)
+            .autoconnect()
+            .sink { _ in
+                if liveActivityEnabled && activityManager.isActivityActive {
+                    activityManager.updateActivity(
+                        angle: motionManager.roll,
+                        maxLeft: motionManager.maxLeanLeft,
+                        maxRight: motionManager.maxLeanRight,
+                        speed: locationManager.speed,
+                        isMoving: locationManager.isMoving
+                    )
+                }
+            }
+            .store(in: &cancellables)
     }
 }
 
