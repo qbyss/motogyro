@@ -515,26 +515,33 @@ struct SpeedSettingsView: View {
     @ObservedObject var themeManager: ThemeManager
     @Binding var speedThresholdEnabled: Bool
     @Environment(\.dismiss) var dismiss
-    @State private var selectedTheme: String = ""
+    @State private var selectedIndex: Int = 0
 
     var body: some View {
         NavigationView {
             Form {
                 Section(header: Text("Appearance")) {
-                    Picker("Theme", selection: $selectedTheme) {
-                        Text("System").tag("System")
-                        Text("Light").tag("Light")
-                        Text("Dark").tag("Dark")
+                    Picker("Theme", selection: $selectedIndex) {
+                        Text("System").tag(0)
+                        Text("Light").tag(1)
+                        Text("Dark").tag(2)
                     }
                     .pickerStyle(.segmented)
-                    .onChange(of: selectedTheme) { _, newValue in
-                        print("🎨 Picker changed to: \(newValue)")
-                        if let preference = ThemePreference(rawValue: newValue) {
-                            themeManager.themePreference = preference
+                    .onChange(of: selectedIndex) { _, newValue in
+                        print("🎨 Picker index changed to: \(newValue)")
+                        let themes: [ThemePreference] = [.system, .light, .dark]
+                        if newValue >= 0 && newValue < themes.count {
+                            themeManager.themePreference = themes[newValue]
                         }
                     }
                     .onAppear {
-                        selectedTheme = themeManager.themePreference.rawValue
+                        // Map current theme to index
+                        switch themeManager.themePreference {
+                        case .system: selectedIndex = 0
+                        case .light: selectedIndex = 1
+                        case .dark: selectedIndex = 2
+                        }
+                        print("🎨 Initial theme index: \(selectedIndex)")
                     }
                 }
 
