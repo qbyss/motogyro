@@ -140,7 +140,7 @@ struct LockScreenLiveActivityView: View {
             }
             .foregroundColor(.white)
 
-            HStack(spacing: 20) {
+            HStack(spacing: 30) {
                 // Speed
                 VStack(alignment: .leading, spacing: 4) {
                     Text("SPEED")
@@ -156,8 +156,6 @@ struct LockScreenLiveActivityView: View {
                             .foregroundColor(.gray)
                     }
                 }
-
-                Spacer()
 
                 // Lean Angle
                 VStack(alignment: .trailing, spacing: 4) {
