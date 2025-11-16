@@ -22,15 +22,12 @@ struct MotoGyroWidgetLiveActivity: Widget {
                     VStack(alignment: .leading, spacing: 4) {
                         Text("SPEED")
                             .font(.caption2)
-                            .foregroundColor(.white)
                         HStack(spacing: 2) {
                             Text(String(format: "%.0f", context.state.currentSpeed))
                                 .font(.title2)
                                 .fontWeight(.bold)
-                                .foregroundColor(.white)
                             Text(context.state.useMetric ? "km/h" : "mph")
                                 .font(.caption)
-                                .foregroundColor(.white)
                         }
                     }
                 }
@@ -39,15 +36,13 @@ struct MotoGyroWidgetLiveActivity: Widget {
                     VStack(alignment: .trailing, spacing: 4) {
                         Text("LEAN")
                             .font(.caption2)
-                            .foregroundColor(.white)
                         HStack(spacing: 2) {
                             Text(String(format: "%.0f°", abs(context.state.currentLeanAngle)))
                                 .font(.title2)
                                 .fontWeight(.bold)
-                                .foregroundColor(.white)
                             Image(systemName: context.state.currentLeanAngle > 0 ? "arrow.right" : "arrow.left")
                                 .font(.caption)
-                                .foregroundColor(.green)
+                                .foregroundStyle(.green)
                         }
                     }
                 }
@@ -57,32 +52,40 @@ struct MotoGyroWidgetLiveActivity: Widget {
                         VStack(spacing: 2) {
                             Text("MAX L")
                                 .font(.caption2)
-                                .foregroundColor(.white)
                             Text(String(format: "%.0f°", context.state.maxLeanLeft))
                                 .font(.callout)
                                 .fontWeight(.semibold)
-                                .foregroundColor(.white)
                         }
 
                         VStack(spacing: 2) {
                             Text("MAX R")
                                 .font(.caption2)
-                                .foregroundColor(.white)
                             Text(String(format: "%.0f°", context.state.maxLeanRight))
                                 .font(.callout)
                                 .fontWeight(.semibold)
-                                .foregroundColor(.white)
                         }
                     }
                     .padding(.top, 4)
                 }
             } compactLeading: {
-                Image(systemName: "speedometer")
+                HStack(spacing: 2) {
+                    Image(systemName: "gauge.with.needle")
+                        .font(.system(size: 12))
+                    Text("\(Int(context.state.currentSpeed))")
+                        .font(.system(size: 12, weight: .semibold))
+                }
             } compactTrailing: {
-                Image(systemName: "arrow.left.and.right")
+                HStack(spacing: 2) {
+                    Text("\(Int(abs(context.state.currentLeanAngle)))°")
+                        .font(.system(size: 12, weight: .semibold))
+                    Image(systemName: "arrow.left.and.right")
+                        .font(.system(size: 10))
+                }
             } minimal: {
                 Image(systemName: "motorcycle")
+                    .font(.system(size: 14))
             }
+            .keylineTint(.green)
         }
     }
 }
