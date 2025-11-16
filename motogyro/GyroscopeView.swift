@@ -111,9 +111,9 @@ struct HorizonSphereView: View {
                         .fill(Color.white)
                         .frame(width: size * 0.95, height: 3)
 
-                    // Horizon graduation marks - vertical ticks along the horizon line
-                    ForEach([-150, -100, -50, -25, 25, 50, 100, 150], id: \.self) { offset in
-                        HorizonGraduationMark(offset: offset, size: size)
+                    // Horizon graduation marks - horizontal lines at different Y positions
+                    ForEach([-60, -40, -20, 20, 40, 60], id: \.self) { yOffset in
+                        HorizonGraduationMark(yOffset: yOffset, size: size)
                     }
                 }
                 .rotationEffect(.degrees(-rollAngle)) // Counter-rotate to keep level
@@ -136,19 +136,19 @@ struct HorizonSphereView: View {
 }
 
 struct HorizonGraduationMark: View {
-    let offset: Int  // Horizontal offset from center in pixels
+    let yOffset: Int  // Vertical offset from center in pixels
     let size: CGFloat
 
     var body: some View {
-        // VERTICAL line: height is TALL, width is THIN
-        let markHeight: CGFloat = abs(offset) >= 100 ? 40 : 30
-        let markWidth: CGFloat = 3
+        // HORIZONTAL line: width is WIDE, height is THIN
+        let markWidth: CGFloat = abs(yOffset) >= 40 ? 100 : 80
+        let markHeight: CGFloat = 3
 
-        // Create a vertical line - height MUST be > width for vertical orientation
+        // Create a horizontal line positioned at Y offset
         Rectangle()
             .fill(Color.white)
             .frame(width: markWidth, height: markHeight)
-            .offset(x: CGFloat(offset), y: 0)
+            .offset(x: 0, y: CGFloat(yOffset))
     }
 }
 
