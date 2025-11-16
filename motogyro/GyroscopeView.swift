@@ -140,20 +140,15 @@ struct HorizonGraduationMark: View {
     let size: CGFloat
 
     var body: some View {
-        // Draw a VERTICAL line perpendicular to the horizon
-        let markLength: CGFloat = abs(offset) >= 100 ? 30 : 20  // extends above and below horizon
+        // VERTICAL line: height is TALL, width is THIN
+        let markHeight: CGFloat = abs(offset) >= 100 ? 40 : 30
+        let markWidth: CGFloat = 3
 
-        Path { path in
-            // Vertical line at horizontal position 'offset'
-            // Line goes from top to bottom (Y-axis)
-            let x = CGFloat(offset)
-            let yStart = -markLength / 2  // Above horizon
-            let yEnd = markLength / 2     // Below horizon
-
-            path.move(to: CGPoint(x: x, y: yStart))
-            path.addLine(to: CGPoint(x: x, y: yEnd))
-        }
-        .stroke(Color.white, lineWidth: 3)
+        // Create a vertical line - height MUST be > width for vertical orientation
+        Rectangle()
+            .fill(Color.white)
+            .frame(width: markWidth, height: markHeight)
+            .offset(x: CGFloat(offset), y: 0)
     }
 }
 
