@@ -26,7 +26,14 @@ enum ThemePreference: String, CaseIterable {
 }
 
 class ThemeManager: ObservableObject {
-    @Published var themePreference: ThemePreference = .system
+    @Published var themePreference: ThemePreference = .system {
+        didSet {
+            // Save asynchronously to avoid blocking the UI
+            DispatchQueue.global(qos: .background).async {
+                UserDefaults.standard.set(self.themePreference.rawValue, forKey: "themePreference")
+            }
+        }
+    }
 
     init() {
         // Load saved theme preference
@@ -34,10 +41,5 @@ class ThemeManager: ObservableObject {
            let preference = ThemePreference(rawValue: savedTheme) {
             themePreference = preference
         }
-    }
-
-    func setTheme(_ preference: ThemePreference) {
-        themePreference = preference
-        UserDefaults.standard.set(preference.rawValue, forKey: "themePreference")
     }
 }

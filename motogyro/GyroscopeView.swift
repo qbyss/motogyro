@@ -525,9 +525,7 @@ struct SpeedSettingsView: View {
                             Text(preference.rawValue).tag(preference)
                         }
                     }
-                    .onChange(of: themeManager.themePreference) { _, newValue in
-                        themeManager.setTheme(newValue)
-                    }
+                    .pickerStyle(.segmented)
                 }
 
                 Section(header: Text("Speed Threshold")) {
