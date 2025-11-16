@@ -147,6 +147,8 @@ struct LockScreenLiveActivityView: View {
                             .font(.title)
                             .fontWeight(.bold)
                             .foregroundColor(.white)
+                            .monospacedDigit()
+                            .contentTransition(.identity)
                         Text(context.state.useMetric ? "km/h" : "mph")
                             .font(.caption)
                             .foregroundColor(.gray)
@@ -162,30 +164,43 @@ struct LockScreenLiveActivityView: View {
                         .font(.title)
                         .fontWeight(.bold)
                         .foregroundColor(context.state.currentLeanAngle < 0 ? .red : .green)
+                        .monospacedDigit()
+                        .contentTransition(.identity)
+                        .frame(minWidth: 60, alignment: .trailing)
                 }
+            }
+            .transaction { transaction in
+                transaction.animation = nil
             }
 
             // Max leans
-            HStack(spacing: 30) {
-                VStack(spacing: 2) {
-                    Text("MAX L")
-                        .font(.caption2)
-                        .foregroundColor(.gray)
+            HStack(spacing: 40) {
+                HStack(spacing: 4) {
+                    Image(systemName: "arrow.left")
+                        .font(.caption)
+                        .foregroundColor(.green)
                     Text(String(format: "%.0f°", context.state.maxLeanLeft))
                         .font(.callout)
                         .fontWeight(.semibold)
-                        .foregroundColor(.white)
+                        .foregroundColor(.green)
+                        .monospacedDigit()
+                        .contentTransition(.identity)
                 }
 
-                VStack(spacing: 2) {
-                    Text("MAX R")
-                        .font(.caption2)
-                        .foregroundColor(.gray)
+                HStack(spacing: 4) {
                     Text(String(format: "%.0f°", context.state.maxLeanRight))
                         .font(.callout)
                         .fontWeight(.semibold)
-                        .foregroundColor(.white)
+                        .foregroundColor(.red)
+                        .monospacedDigit()
+                        .contentTransition(.identity)
+                    Image(systemName: "arrow.right")
+                        .font(.caption)
+                        .foregroundColor(.red)
                 }
+            }
+            .transaction { transaction in
+                transaction.animation = nil
             }
         }
         .padding()
