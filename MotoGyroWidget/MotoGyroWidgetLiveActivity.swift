@@ -41,15 +41,11 @@ struct MotoGyroWidgetLiveActivity: Widget {
                     VStack(alignment: .trailing, spacing: 4) {
                         Text("LEAN")
                             .font(.caption2)
-                        HStack(spacing: 2) {
-                            Text(String(format: "%.0f°", abs(context.state.currentLeanAngle)))
-                                .font(.title2)
-                                .fontWeight(.bold)
-                                .contentTransition(.identity)
-                            Image(systemName: context.state.currentLeanAngle > 0 ? "arrow.right" : "arrow.left")
-                                .font(.caption)
-                                .foregroundStyle(.green)
-                        }
+                        Text(String(format: "%.0f°", context.state.currentLeanAngle))
+                            .font(.title2)
+                            .fontWeight(.bold)
+                            .foregroundStyle(context.state.currentLeanAngle < 0 ? .red : .green)
+                            .contentTransition(.identity)
                     }
                     .padding(.trailing, 8)
                     .transaction { transaction in
@@ -162,15 +158,10 @@ struct LockScreenLiveActivityView: View {
                     Text("LEAN")
                         .font(.caption2)
                         .foregroundColor(.gray)
-                    HStack(spacing: 4) {
-                        Text(String(format: "%.0f°", abs(context.state.currentLeanAngle)))
-                            .font(.title)
-                            .fontWeight(.bold)
-                            .foregroundColor(.white)
-                        Image(systemName: context.state.currentLeanAngle > 0 ? "arrow.right" : "arrow.left")
-                            .font(.caption)
-                            .foregroundColor(.green)
-                    }
+                    Text(String(format: "%.0f°", context.state.currentLeanAngle))
+                        .font(.title)
+                        .fontWeight(.bold)
+                        .foregroundColor(context.state.currentLeanAngle < 0 ? .red : .green)
                 }
             }
 
