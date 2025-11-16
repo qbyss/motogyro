@@ -11,8 +11,6 @@ import SwiftUI
 @main
 struct MotoGyroWidgetBundle: WidgetBundle {
     var body: some Widget {
-        MotoGyroWidget()
-        MotoGyroWidgetControl()
         MotoGyroWidgetLiveActivity()
     }
 }
