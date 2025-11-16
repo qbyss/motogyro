@@ -12,69 +12,199 @@ import SwiftUI
 struct MotoGyroWidgetAttributes: ActivityAttributes {
     public struct ContentState: Codable, Hashable {
         // Dynamic stateful properties about your activity go here!
-        var emoji: String
+        var currentSpeed: Double
+        var currentLeanAngle: Double
+        var maxLeanLeft: Double
+        var maxLeanRight: Double
+        var useMetric: Bool
+        var isTracking: Bool
     }
 
     // Fixed non-changing properties about your activity go here!
-    var name: String
+    var rideStartTime: Date
 }
 
 struct MotoGyroWidgetLiveActivity: Widget {
     var body: some WidgetConfiguration {
         ActivityConfiguration(for: MotoGyroWidgetAttributes.self) { context in
             // Lock screen/banner UI goes here
-            VStack {
-                Text("Hello \(context.state.emoji)")
-            }
-            .activityBackgroundTint(Color.cyan)
-            .activitySystemActionForegroundColor(Color.black)
+            LockScreenLiveActivityView(context: context)
+                .activityBackgroundTint(Color.black.opacity(0.3))
+                .activitySystemActionForegroundColor(Color.white)
 
         } dynamicIsland: { context in
             DynamicIsland {
-                // Expanded UI goes here.  Compose the expanded UI through
-                // various regions, like leading/trailing/center/bottom
+                // Expanded UI goes here
                 DynamicIslandExpandedRegion(.leading) {
-                    Text("Leading")
+                    VStack(alignment: .leading, spacing: 4) {
+                        Text("SPEED")
+                            .font(.caption2)
+                            .foregroundColor(.gray)
+                        HStack(spacing: 2) {
+                            Text(String(format: "%.0f", context.state.currentSpeed))
+                                .font(.title2)
+                                .fontWeight(.bold)
+                            Text(context.state.useMetric ? "km/h" : "mph")
+                                .font(.caption)
+                                .foregroundColor(.gray)
+                        }
+                    }
                 }
+
                 DynamicIslandExpandedRegion(.trailing) {
-                    Text("Trailing")
+                    VStack(alignment: .trailing, spacing: 4) {
+                        Text("LEAN")
+                            .font(.caption2)
+                            .foregroundColor(.gray)
+                        HStack(spacing: 2) {
+                            Text(String(format: "%.0f°", abs(context.state.currentLeanAngle)))
+                                .font(.title2)
+                                .fontWeight(.bold)
+                            Image(systemName: context.state.currentLeanAngle > 0 ? "arrow.right" : "arrow.left")
+                                .font(.caption)
+                                .foregroundColor(context.state.isTracking ? .green : .red)
+                        }
+                    }
                 }
+
                 DynamicIslandExpandedRegion(.bottom) {
-                    Text("Bottom \(context.state.emoji)")
-                    // more content
+                    HStack(spacing: 20) {
+                        VStack(spacing: 2) {
+                            Text("MAX L")
+                                .font(.caption2)
+                                .foregroundColor(.gray)
+                            Text(String(format: "%.0f°", context.state.maxLeanLeft))
+                                .font(.callout)
+                                .fontWeight(.semibold)
+                        }
+
+                        VStack(spacing: 2) {
+                            Text("MAX R")
+                                .font(.caption2)
+                                .foregroundColor(.gray)
+                            Text(String(format: "%.0f°", context.state.maxLeanRight))
+                                .font(.callout)
+                                .fontWeight(.semibold)
+                        }
+                    }
+                    .padding(.top, 4)
                 }
             } compactLeading: {
-                Text("L")
+                HStack(spacing: 2) {
+                    Text(String(format: "%.0f", context.state.currentSpeed))
+                        .font(.caption2)
+                        .fontWeight(.bold)
+                }
             } compactTrailing: {
-                Text("T \(context.state.emoji)")
+                HStack(spacing: 2) {
+                    Text(String(format: "%.0f°", abs(context.state.currentLeanAngle)))
+                        .font(.caption2)
+                        .fontWeight(.bold)
+                }
             } minimal: {
-                Text(context.state.emoji)
+                Image(systemName: "motorcycle")
+                    .font(.caption2)
             }
-            .widgetURL(URL(string: "http://www.apple.com"))
-            .keylineTint(Color.red)
+            .keylineTint(context.state.isTracking ? Color.green : Color.red)
         }
+    }
+}
+
+struct LockScreenLiveActivityView: View {
+    let context: ActivityViewContext<MotoGyroWidgetAttributes>
+
+    var body: some View {
+        VStack(spacing: 12) {
+            HStack(spacing: 20) {
+                // Speed
+                VStack(spacing: 4) {
+                    Text("SPEED")
+                        .font(.caption)
+                        .foregroundColor(.gray)
+                    HStack(spacing: 4) {
+                        Text(String(format: "%.0f", context.state.currentSpeed))
+                            .font(.title)
+                            .fontWeight(.bold)
+                        Text(context.state.useMetric ? "km/h" : "mph")
+                            .font(.caption)
+                            .foregroundColor(.gray)
+                    }
+                }
+
+                Divider()
+                    .frame(height: 40)
+
+                // Current Lean
+                VStack(spacing: 4) {
+                    Text("LEAN")
+                        .font(.caption)
+                        .foregroundColor(.gray)
+                    HStack(spacing: 4) {
+                        Text(String(format: "%.0f°", abs(context.state.currentLeanAngle)))
+                            .font(.title)
+                            .fontWeight(.bold)
+                        Image(systemName: context.state.currentLeanAngle > 0 ? "arrow.right" : "arrow.left")
+                            .foregroundColor(context.state.isTracking ? .green : .red)
+                    }
+                }
+            }
+
+            // Max Lean Angles
+            HStack(spacing: 30) {
+                VStack(spacing: 2) {
+                    Text("MAX LEFT")
+                        .font(.caption2)
+                        .foregroundColor(.gray)
+                    Text(String(format: "%.0f°", context.state.maxLeanLeft))
+                        .font(.headline)
+                }
+
+                VStack(spacing: 2) {
+                    Text("MAX RIGHT")
+                        .font(.caption2)
+                        .foregroundColor(.gray)
+                    Text(String(format: "%.0f°", context.state.maxLeanRight))
+                        .font(.headline)
+                }
+            }
+        }
+        .padding()
     }
 }
 
 extension MotoGyroWidgetAttributes {
     fileprivate static var preview: MotoGyroWidgetAttributes {
-        MotoGyroWidgetAttributes(name: "World")
+        MotoGyroWidgetAttributes(rideStartTime: Date())
     }
 }
 
 extension MotoGyroWidgetAttributes.ContentState {
-    fileprivate static var smiley: MotoGyroWidgetAttributes.ContentState {
-        MotoGyroWidgetAttributes.ContentState(emoji: "😀")
-     }
-     
-     fileprivate static var starEyes: MotoGyroWidgetAttributes.ContentState {
-         MotoGyroWidgetAttributes.ContentState(emoji: "🤩")
-     }
+    fileprivate static var riding: MotoGyroWidgetAttributes.ContentState {
+        MotoGyroWidgetAttributes.ContentState(
+            currentSpeed: 45,
+            currentLeanAngle: 32,
+            maxLeanLeft: 38,
+            maxLeanRight: 42,
+            useMetric: true,
+            isTracking: true
+        )
+    }
+
+    fileprivate static var stopped: MotoGyroWidgetAttributes.ContentState {
+        MotoGyroWidgetAttributes.ContentState(
+            currentSpeed: 0,
+            currentLeanAngle: 2,
+            maxLeanLeft: 38,
+            maxLeanRight: 42,
+            useMetric: true,
+            isTracking: false
+        )
+    }
 }
 
 #Preview("Notification", as: .content, using: MotoGyroWidgetAttributes.preview) {
    MotoGyroWidgetLiveActivity()
 } contentStates: {
-    MotoGyroWidgetAttributes.ContentState.smiley
-    MotoGyroWidgetAttributes.ContentState.starEyes
+    MotoGyroWidgetAttributes.ContentState.riding
+    MotoGyroWidgetAttributes.ContentState.stopped
 }

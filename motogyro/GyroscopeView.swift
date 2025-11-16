@@ -12,9 +12,12 @@ struct GyroscopeView: View {
     @StateObject private var motionManager = MotionManager()
     @StateObject private var locationManager = LocationManager()
     @StateObject private var themeManager = ThemeManager()
+    @StateObject private var liveActivityManager = LiveActivityManager()
     @State private var showSpeedSettings = false
     @State private var speedThresholdEnabled = false
+    @State private var liveActivityEnabled = false
     @Environment(\.colorScheme) var colorScheme
+    @Environment(\.scenePhase) var scenePhase
 
     var body: some View {
         ZStack {
@@ -111,20 +114,46 @@ struct GyroscopeView: View {
             SpeedSettingsView(
                 locationManager: locationManager,
                 themeManager: themeManager,
-                speedThresholdEnabled: $speedThresholdEnabled
+                liveActivityManager: liveActivityManager,
+                speedThresholdEnabled: $speedThresholdEnabled,
+                liveActivityEnabled: $liveActivityEnabled
             )
         }
         .onAppear {
-            // Load saved preference (default to false for debugging)
+            // Load saved preferences
             speedThresholdEnabled = UserDefaults.standard.object(forKey: "speedThresholdEnabled") as? Bool ?? false
+            liveActivityEnabled = UserDefaults.standard.object(forKey: "liveActivityEnabled") as? Bool ?? false
             locationManager.startTracking()
             updateTrackingState()
+
+            // Start Live Activity if enabled
+            if liveActivityEnabled {
+                liveActivityManager.startActivity()
+            }
         }
         .onChange(of: locationManager.currentSpeed) {
             updateTrackingState()
+            updateLiveActivity()
+        }
+        .onChange(of: motionManager.roll) {
+            updateLiveActivity()
         }
         .onChange(of: speedThresholdEnabled) {
             updateTrackingState()
+        }
+        .onChange(of: liveActivityEnabled) { _, newValue in
+            UserDefaults.standard.set(newValue, forKey: "liveActivityEnabled")
+            if newValue {
+                liveActivityManager.startActivity()
+                updateLiveActivity()
+            } else {
+                liveActivityManager.stopActivity()
+            }
+        }
+        .onChange(of: scenePhase) { _, newPhase in
+            if newPhase == .background && liveActivityEnabled {
+                updateLiveActivity()
+            }
         }
     }
 
@@ -134,6 +163,19 @@ struct GyroscopeView: View {
         } else {
             motionManager.isTrackingEnabled = true
         }
+    }
+
+    private func updateLiveActivity() {
+        guard liveActivityEnabled else { return }
+
+        liveActivityManager.updateActivity(
+            speed: locationManager.useMetric ? locationManager.currentSpeed : locationManager.currentSpeedMPH,
+            leanAngle: motionManager.roll,
+            maxLeanLeft: motionManager.maxLeanLeft,
+            maxLeanRight: motionManager.maxLeanRight,
+            useMetric: locationManager.useMetric,
+            isTracking: motionManager.isTrackingEnabled
+        )
     }
 }
 
@@ -513,7 +555,9 @@ struct SpeedDisplay: View {
 struct SpeedSettingsView: View {
     @ObservedObject var locationManager: LocationManager
     @ObservedObject var themeManager: ThemeManager
+    @ObservedObject var liveActivityManager: LiveActivityManager
     @Binding var speedThresholdEnabled: Bool
+    @Binding var liveActivityEnabled: Bool
     @Environment(\.dismiss) var dismiss
     @State private var localTheme: ThemePreference = .system
 
@@ -527,6 +571,29 @@ struct SpeedSettingsView: View {
                         }
                     }
                     .pickerStyle(.segmented)
+                }
+
+                Section(header: Text("Dynamic Island")) {
+                    Toggle("Enable Live Activity", isOn: $liveActivityEnabled)
+
+                    if liveActivityManager.areActivitiesSupported {
+                        Text("Shows your speed and lean angle in the Dynamic Island when the app is in background")
+                            .font(.caption)
+                            .foregroundColor(.gray)
+                    } else {
+                        Text("Live Activities are not available on this device")
+                            .font(.caption)
+                            .foregroundColor(.red)
+                    }
+
+                    if liveActivityManager.isActivityActive {
+                        HStack {
+                            Image(systemName: "checkmark.circle.fill")
+                                .foregroundColor(.green)
+                            Text("Live Activity is running")
+                                .font(.caption)
+                        }
+                    }
                 }
 
                 Section(header: Text("Speed Threshold")) {
