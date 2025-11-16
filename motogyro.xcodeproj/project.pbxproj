@@ -29,9 +29,22 @@
 		040B691C2ECA33D40062FF0A /* motogyroUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = motogyroUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		040B6B292ECA61AE0062FF0A /* Exceptions for "motogyro" folder in "motogyro" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = 040B68FF2ECA33D20062FF0A /* motogyro */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		040B69022ECA33D20062FF0A /* motogyro */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				040B6B292ECA61AE0062FF0A /* Exceptions for "motogyro" folder in "motogyro" target */,
+			);
 			path = motogyro;
 			sourceTree = "<group>";
 		};
@@ -398,6 +411,9 @@
 				DEVELOPMENT_TEAM = 6L677X9XR2;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = motogyro/Info.plist;
+				INFOPLIST_KEY_NSLocationAlwaysAndWhenInUseUsageDescription = "We need continuous location access to track your speed in the background and provide real-time lean angle data even when the app is not visible.";
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "We need your location to measure your speed while riding and enable lean angle tracking at safe speeds.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -431,6 +447,9 @@
 				DEVELOPMENT_TEAM = 6L677X9XR2;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = motogyro/Info.plist;
+				INFOPLIST_KEY_NSLocationAlwaysAndWhenInUseUsageDescription = "We need continuous location access to track your speed in the background and provide real-time lean angle data even when the app is not visible.";
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "We need your location to measure your speed while riding and enable lean angle tracking at safe speeds.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
