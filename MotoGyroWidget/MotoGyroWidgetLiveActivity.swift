@@ -91,11 +91,79 @@ struct LockScreenLiveActivityView: View {
     let context: ActivityViewContext<MotoGyroWidgetAttributes>
 
     var body: some View {
-        Text("MOTO GYRO ACTIVE")
-            .font(.largeTitle)
-            .padding()
-            .background(Color.red)
+        VStack(spacing: 12) {
+            HStack {
+                Image(systemName: "motorcycle")
+                    .font(.title2)
+                Text("MOTO GYRO")
+                    .font(.headline)
+                    .fontWeight(.bold)
+                Spacer()
+            }
             .foregroundColor(.white)
+
+            HStack(spacing: 20) {
+                // Speed
+                VStack(alignment: .leading, spacing: 4) {
+                    Text("SPEED")
+                        .font(.caption2)
+                        .foregroundColor(.gray)
+                    HStack(spacing: 4) {
+                        Text(String(format: "%.0f", context.state.currentSpeed))
+                            .font(.title)
+                            .fontWeight(.bold)
+                            .foregroundColor(.white)
+                        Text(context.state.useMetric ? "km/h" : "mph")
+                            .font(.caption)
+                            .foregroundColor(.gray)
+                    }
+                }
+
+                Spacer()
+
+                // Lean Angle
+                VStack(alignment: .trailing, spacing: 4) {
+                    Text("LEAN")
+                        .font(.caption2)
+                        .foregroundColor(.gray)
+                    HStack(spacing: 4) {
+                        Text(String(format: "%.0f°", abs(context.state.currentLeanAngle)))
+                            .font(.title)
+                            .fontWeight(.bold)
+                            .foregroundColor(.white)
+                        Image(systemName: context.state.currentLeanAngle > 0 ? "arrow.right" : "arrow.left")
+                            .font(.caption)
+                            .foregroundColor(.green)
+                    }
+                }
+            }
+
+            // Max leans
+            HStack(spacing: 30) {
+                VStack(spacing: 2) {
+                    Text("MAX L")
+                        .font(.caption2)
+                        .foregroundColor(.gray)
+                    Text(String(format: "%.0f°", context.state.maxLeanLeft))
+                        .font(.callout)
+                        .fontWeight(.semibold)
+                        .foregroundColor(.white)
+                }
+
+                VStack(spacing: 2) {
+                    Text("MAX R")
+                        .font(.caption2)
+                        .foregroundColor(.gray)
+                    Text(String(format: "%.0f°", context.state.maxLeanRight))
+                        .font(.callout)
+                        .fontWeight(.semibold)
+                        .foregroundColor(.white)
+                }
+            }
+        }
+        .padding()
+        .activityBackgroundTint(Color.black.opacity(0.8))
+        .activitySystemActionForegroundColor(.white)
     }
 }
 
