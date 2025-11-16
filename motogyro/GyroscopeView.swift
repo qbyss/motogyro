@@ -515,23 +515,27 @@ struct SpeedSettingsView: View {
     @ObservedObject var themeManager: ThemeManager
     @Binding var speedThresholdEnabled: Bool
     @Environment(\.dismiss) var dismiss
+    @State private var selectedTheme: String = ""
 
     var body: some View {
         NavigationView {
             Form {
                 Section(header: Text("Appearance")) {
-                    Picker("Theme", selection: Binding(
-                        get: { themeManager.themePreference },
-                        set: { newValue in
-                            print("🎨 Picker setting: \(newValue.rawValue)")
-                            themeManager.themePreference = newValue
-                        }
-                    )) {
-                        Text("System").tag(ThemePreference.system)
-                        Text("Light").tag(ThemePreference.light)
-                        Text("Dark").tag(ThemePreference.dark)
+                    Picker("Theme", selection: $selectedTheme) {
+                        Text("System").tag("System")
+                        Text("Light").tag("Light")
+                        Text("Dark").tag("Dark")
                     }
                     .pickerStyle(.segmented)
+                    .onChange(of: selectedTheme) { _, newValue in
+                        print("🎨 Picker changed to: \(newValue)")
+                        if let preference = ThemePreference(rawValue: newValue) {
+                            themeManager.themePreference = preference
+                        }
+                    }
+                    .onAppear {
+                        selectedTheme = themeManager.themePreference.rawValue
+                    }
                 }
 
                 Section(header: Text("Speed Threshold")) {
