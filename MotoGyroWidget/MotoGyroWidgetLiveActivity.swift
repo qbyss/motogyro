@@ -68,22 +68,22 @@ struct MotoGyroWidgetLiveActivity: Widget {
                     .padding(.top, 4)
                 }
             } compactLeading: {
-                HStack(spacing: 2) {
+                HStack(spacing: 3) {
                     Image(systemName: "gauge.with.needle")
-                        .font(.system(size: 12))
+                        .font(.system(size: 16))
                     Text("\(Int(context.state.currentSpeed))")
-                        .font(.system(size: 12, weight: .semibold))
+                        .font(.system(size: 16, weight: .bold))
                 }
             } compactTrailing: {
-                HStack(spacing: 2) {
+                HStack(spacing: 3) {
                     Text("\(Int(abs(context.state.currentLeanAngle)))°")
-                        .font(.system(size: 12, weight: .semibold))
+                        .font(.system(size: 16, weight: .bold))
                     Image(systemName: "arrow.left.and.right")
-                        .font(.system(size: 10))
+                        .font(.system(size: 14))
                 }
             } minimal: {
                 Image(systemName: "motorcycle")
-                    .font(.system(size: 14))
+                    .font(.system(size: 18))
             }
             .keylineTint(.green)
         }
