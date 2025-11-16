@@ -85,28 +85,26 @@ struct GyroscopeView: View {
                                 .cornerRadius(10)
                         }
                     }
-                }
-                .padding(.bottom, 50)
-            }
-            // Settings button in top-right corner
-            VStack {
-                HStack {
-                    Spacer()
+
+                    // Settings button
                     Button(action: {
                         showSpeedSettings.toggle()
                     }) {
-                        Image(systemName: "gearshape.fill")
-                            .font(.system(size: 24))
-                            .foregroundColor(.white)
-                            .padding(12)
-                            .background(Color.gray.opacity(0.8))
-                            .clipShape(Circle())
-                            .shadow(radius: 3)
+                        HStack(spacing: 8) {
+                            Image(systemName: "gearshape.fill")
+                                .font(.system(size: 16))
+                            Text("Settings")
+                                .font(.system(size: 16, weight: .bold))
+                        }
+                        .foregroundColor(.white)
+                        .padding(.horizontal, 20)
+                        .padding(.vertical, 12)
+                        .background(Color.gray)
+                        .cornerRadius(10)
                     }
-                    .padding(.top, 20)
-                    .padding(.trailing, 20)
+                    .padding(.top, 10)
                 }
-                Spacer()
+                .padding(.bottom, 50)
             }
         }
         .persistentSystemOverlays(.hidden)
