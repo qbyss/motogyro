@@ -22,6 +22,7 @@ struct GyroscopeView: View {
             VStack(spacing: 20) {
                 // GPS Speed Display at top
                 SpeedDisplay(
+                    currentLeanAngle: motionManager.roll,
                     currentSpeed: locationManager.useMetric ? locationManager.currentSpeed : locationManager.currentSpeedMPH,
                     maxSpeed: locationManager.maxSpeed,
                     useMetric: locationManager.useMetric,
@@ -428,6 +429,7 @@ struct MaxLeanDisplay: View {
 }
 
 struct SpeedDisplay: View {
+    let currentLeanAngle: Double
     let currentSpeed: Double
     let maxSpeed: Double
     let useMetric: Bool
@@ -436,7 +438,23 @@ struct SpeedDisplay: View {
 
     var body: some View {
         VStack(spacing: 4) {
-            HStack(spacing: 30) {
+            HStack(spacing: 25) {
+                // Current lean angle
+                VStack(spacing: 2) {
+                    Text("LEAN")
+                        .font(.system(size: 12, weight: .bold))
+                        .foregroundColor(.gray)
+                    Text(String(format: "%.0f", abs(currentLeanAngle)))
+                        .font(.system(size: 28, weight: .bold))
+                        .foregroundColor(.black)
+                    Text("deg")
+                        .font(.system(size: 11, weight: .medium))
+                        .foregroundColor(.gray)
+                }
+
+                Divider()
+                    .frame(height: 50)
+
                 // Current speed
                 VStack(spacing: 2) {
                     Text("SPEED")
