@@ -24,14 +24,15 @@ struct MotoGyroWidgetLiveActivity: Widget {
                     VStack(alignment: .leading, spacing: 4) {
                         Text("SPEED")
                             .font(.caption2)
-                            .foregroundColor(.gray)
+                            .foregroundColor(.white)
                         HStack(spacing: 2) {
                             Text(String(format: "%.0f", context.state.currentSpeed))
                                 .font(.title2)
                                 .fontWeight(.bold)
+                                .foregroundColor(.white)
                             Text(context.state.useMetric ? "km/h" : "mph")
                                 .font(.caption)
-                                .foregroundColor(.gray)
+                                .foregroundColor(.white)
                         }
                     }
                 }
@@ -40,14 +41,15 @@ struct MotoGyroWidgetLiveActivity: Widget {
                     VStack(alignment: .trailing, spacing: 4) {
                         Text("LEAN")
                             .font(.caption2)
-                            .foregroundColor(.gray)
+                            .foregroundColor(.white)
                         HStack(spacing: 2) {
                             Text(String(format: "%.0f°", abs(context.state.currentLeanAngle)))
                                 .font(.title2)
                                 .fontWeight(.bold)
+                                .foregroundColor(.white)
                             Image(systemName: context.state.currentLeanAngle > 0 ? "arrow.right" : "arrow.left")
                                 .font(.caption)
-                                .foregroundColor(context.state.isTracking ? .green : .red)
+                                .foregroundColor(.green)
                         }
                     }
                 }
@@ -57,19 +59,21 @@ struct MotoGyroWidgetLiveActivity: Widget {
                         VStack(spacing: 2) {
                             Text("MAX L")
                                 .font(.caption2)
-                                .foregroundColor(.gray)
+                                .foregroundColor(.white)
                             Text(String(format: "%.0f°", context.state.maxLeanLeft))
                                 .font(.callout)
                                 .fontWeight(.semibold)
+                                .foregroundColor(.white)
                         }
 
                         VStack(spacing: 2) {
                             Text("MAX R")
                                 .font(.caption2)
-                                .foregroundColor(.gray)
+                                .foregroundColor(.white)
                             Text(String(format: "%.0f°", context.state.maxLeanRight))
                                 .font(.callout)
                                 .fontWeight(.semibold)
+                                .foregroundColor(.white)
                         }
                     }
                     .padding(.top, 4)
@@ -78,15 +82,17 @@ struct MotoGyroWidgetLiveActivity: Widget {
                 Text("MOTO")
                     .font(.caption2)
                     .fontWeight(.bold)
+                    .foregroundColor(.white)
             } compactTrailing: {
                 Text("GYRO")
                     .font(.caption2)
                     .fontWeight(.bold)
+                    .foregroundColor(.white)
             } minimal: {
                 Text("🏍️")
                     .font(.caption2)
             }
-            .keylineTint(context.state.isTracking ? Color.green : Color.red)
+            .keylineTint(Color.red)
         }
     }
 }
