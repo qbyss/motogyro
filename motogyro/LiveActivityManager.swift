@@ -14,7 +14,7 @@ class LiveActivityManager: ObservableObject {
     @Published var isActivityActive: Bool = false
     private var currentActivity: Activity<MotoGyroWidgetAttributes>?
     private var lastUpdateTime: Date?
-    private let updateInterval: TimeInterval = 0.5 // Update at most twice per second
+    private let updateInterval: TimeInterval = 1.0 // Update at most once per second
 
     // Start the Live Activity
     func startActivity() {
