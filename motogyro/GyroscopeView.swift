@@ -191,24 +191,43 @@ struct ScaleMarkView: View {
         let angleInRadians = Double(angle) * .pi / 180.0
         let center = CGPoint(x: size / 2, y: size / 2)
 
-        // Position on the arc
-        let arcX = center.x + radius * sin(angleInRadians)
-        let arcY = center.y - radius * cos(angleInRadians)
+        // Special marks (0° and ±50°) extend through the arc
+        let isSpecialMark = angle == 0 || angle == 50 || angle == -50
 
-        // Position for the inner end of the mark (pointing toward center)
-        let markLength: CGFloat = 20
-        let innerRadius = radius - markLength
-        let innerX = center.x + innerRadius * sin(angleInRadians)
-        let innerY = center.y - innerRadius * cos(angleInRadians)
+        if isSpecialMark {
+            // Mark extends both inward and outward through the arc
+            let innerMarkLength: CGFloat = 20
+            let outerMarkLength: CGFloat = 10
 
-        // Make the 0° mark green to stand out
-        let markColor = angle == 0 ? Color.green : Color.black
+            let innerRadius = radius - innerMarkLength
+            let outerRadius = radius + outerMarkLength
 
-        Path { path in
-            path.move(to: CGPoint(x: arcX, y: arcY))
-            path.addLine(to: CGPoint(x: innerX, y: innerY))
+            let innerX = center.x + innerRadius * sin(angleInRadians)
+            let innerY = center.y - innerRadius * cos(angleInRadians)
+            let outerX = center.x + outerRadius * sin(angleInRadians)
+            let outerY = center.y - outerRadius * cos(angleInRadians)
+
+            Path { path in
+                path.move(to: CGPoint(x: outerX, y: outerY))
+                path.addLine(to: CGPoint(x: innerX, y: innerY))
+            }
+            .stroke(Color.black, lineWidth: 2.5)
+        } else {
+            // Regular marks only extend inward
+            let markLength: CGFloat = 20
+            let innerRadius = radius - markLength
+
+            let arcX = center.x + radius * sin(angleInRadians)
+            let arcY = center.y - radius * cos(angleInRadians)
+            let innerX = center.x + innerRadius * sin(angleInRadians)
+            let innerY = center.y - innerRadius * cos(angleInRadians)
+
+            Path { path in
+                path.move(to: CGPoint(x: arcX, y: arcY))
+                path.addLine(to: CGPoint(x: innerX, y: innerY))
+            }
+            .stroke(Color.black, lineWidth: 2.5)
         }
-        .stroke(markColor, lineWidth: 2.5)
     }
 }
 
