@@ -17,11 +17,7 @@ struct GyroscopeView: View {
     @State private var liveActivityEnabled = false
 
     var body: some View {
-        ZStack {
-            Color.white
-                .ignoresSafeArea()
-
-            VStack(spacing: 20) {
+        VStack(spacing: 20) {
                 // Speed and Live Activity toggle
                 VStack(spacing: 10) {
                     Text("\(Int(locationManager.speed)) km/h")
@@ -97,7 +93,7 @@ struct GyroscopeView: View {
                 }
                 .padding(.bottom, 50)
             }
-        }
+        .background(Color.white)
         .onAppear {
             // Request location permissions and start tracking
             locationManager.requestPermissions()

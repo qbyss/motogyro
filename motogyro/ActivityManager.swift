@@ -23,13 +23,19 @@ class ActivityManager: ObservableObject {
     }
 
     func startActivity() {
-        guard ActivityAuthorizationInfo().areActivitiesEnabled else {
-            print("Live Activities are not enabled")
+        let authInfo = ActivityAuthorizationInfo()
+        print("🔴 Starting activity - areActivitiesEnabled: \(authInfo.areActivitiesEnabled)")
+
+        guard authInfo.areActivitiesEnabled else {
+            print("🔴 Live Activities are not enabled")
             return
         }
 
         // Don't start if already active
-        guard activity == nil else { return }
+        guard activity == nil else {
+            print("🔴 Activity already active")
+            return
+        }
 
         let attributes = LeanAngleWidgetAttributes(speedThreshold: speedThreshold)
         let initialState = LeanAngleWidgetAttributes.ContentState(
@@ -46,14 +52,18 @@ class ActivityManager: ObservableObject {
                 content: .init(state: initialState, staleDate: nil)
             )
             isActivityActive = true
-            print("Live Activity started")
+            print("✅ Live Activity started successfully - ID: \(activity?.id ?? "unknown")")
         } catch {
-            print("Error starting Live Activity: \(error.localizedDescription)")
+            print("❌ Error starting Live Activity: \(error.localizedDescription)")
+            print("❌ Error details: \(error)")
         }
     }
 
     func updateActivity(angle: Double, maxLeft: Double, maxRight: Double, speed: Double, isMoving: Bool) {
-        guard let activity = activity else { return }
+        guard let activity = activity else {
+            print("⚠️ Cannot update - no active activity")
+            return
+        }
 
         let updatedState = LeanAngleWidgetAttributes.ContentState(
             currentAngle: angle,
