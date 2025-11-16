@@ -14,8 +14,6 @@ struct MotoGyroWidgetLiveActivity: Widget {
         ActivityConfiguration(for: MotoGyroWidgetAttributes.self) { context in
             // Lock screen/banner UI goes here
             LockScreenLiveActivityView(context: context)
-                .activityBackgroundTint(Color.black.opacity(0.3))
-                .activitySystemActionForegroundColor(Color.white)
 
         } dynamicIsland: { context in
             DynamicIsland {
