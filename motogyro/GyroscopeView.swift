@@ -39,7 +39,7 @@ struct GyroscopeView: View {
                             }
                         }
                 }
-                .padding(.top, 30)
+                .padding(.top, 60)
 
                 Spacer()
 
@@ -98,8 +98,6 @@ struct GyroscopeView: View {
                 .padding(.bottom, 50)
             }
         }
-        .persistentSystemOverlays(.hidden)
-        .statusBarHidden()
         .onAppear {
             // Request location permissions and start tracking
             locationManager.requestPermissions()
