@@ -91,61 +91,11 @@ struct LockScreenLiveActivityView: View {
     let context: ActivityViewContext<MotoGyroWidgetAttributes>
 
     var body: some View {
-        VStack(spacing: 12) {
-            HStack(spacing: 20) {
-                // Speed
-                VStack(spacing: 4) {
-                    Text("SPEED")
-                        .font(.caption)
-                        .foregroundColor(.gray)
-                    HStack(spacing: 4) {
-                        Text(String(format: "%.0f", context.state.currentSpeed))
-                            .font(.title)
-                            .fontWeight(.bold)
-                        Text(context.state.useMetric ? "km/h" : "mph")
-                            .font(.caption)
-                            .foregroundColor(.gray)
-                    }
-                }
-
-                Divider()
-                    .frame(height: 40)
-
-                // Current Lean
-                VStack(spacing: 4) {
-                    Text("LEAN")
-                        .font(.caption)
-                        .foregroundColor(.gray)
-                    HStack(spacing: 4) {
-                        Text(String(format: "%.0f°", abs(context.state.currentLeanAngle)))
-                            .font(.title)
-                            .fontWeight(.bold)
-                        Image(systemName: context.state.currentLeanAngle > 0 ? "arrow.right" : "arrow.left")
-                            .foregroundColor(context.state.isTracking ? .green : .red)
-                    }
-                }
-            }
-
-            // Max Lean Angles
-            HStack(spacing: 30) {
-                VStack(spacing: 2) {
-                    Text("MAX LEFT")
-                        .font(.caption2)
-                        .foregroundColor(.gray)
-                    Text(String(format: "%.0f°", context.state.maxLeanLeft))
-                        .font(.headline)
-                }
-
-                VStack(spacing: 2) {
-                    Text("MAX RIGHT")
-                        .font(.caption2)
-                        .foregroundColor(.gray)
-                    Text(String(format: "%.0f°", context.state.maxLeanRight))
-                        .font(.headline)
-                }
-            }
-        }
-        .padding()
+        Text("MOTO GYRO ACTIVE")
+            .font(.largeTitle)
+            .padding()
+            .background(Color.red)
+            .foregroundColor(.white)
     }
 }
 
