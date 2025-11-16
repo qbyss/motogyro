@@ -10,6 +10,8 @@
 		040B6B582ECA76DB0062FF0A /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 040B6B572ECA76DB0062FF0A /* WidgetKit.framework */; };
 		040B6B5A2ECA76DB0062FF0A /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 040B6B592ECA76DB0062FF0A /* SwiftUI.framework */; };
 		040B6B692ECA76DD0062FF0A /* MotoGyroWidgetExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 040B6B552ECA76DB0062FF0A /* MotoGyroWidgetExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		040B6B742ECA7C3F0062FF0A /* MotoGyroWidgetAttributes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 040B6B732ECA7C3F0062FF0A /* MotoGyroWidgetAttributes.swift */; };
+		040B6B752ECA7C3F0062FF0A /* MotoGyroWidgetAttributes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 040B6B732ECA7C3F0062FF0A /* MotoGyroWidgetAttributes.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -58,6 +60,7 @@
 		040B6B572ECA76DB0062FF0A /* WidgetKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WidgetKit.framework; path = System/Library/Frameworks/WidgetKit.framework; sourceTree = SDKROOT; };
 		040B6B592ECA76DB0062FF0A /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = System/Library/Frameworks/SwiftUI.framework; sourceTree = SDKROOT; };
 		040B6B702ECA77330062FF0A /* MotoGyroWidgetExtension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = MotoGyroWidgetExtension.entitlements; sourceTree = "<group>"; };
+		040B6B732ECA7C3F0062FF0A /* MotoGyroWidgetAttributes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MotoGyroWidgetAttributes.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -143,6 +146,7 @@
 		040B68F72ECA33D20062FF0A = {
 			isa = PBXGroup;
 			children = (
+				040B6B732ECA7C3F0062FF0A /* MotoGyroWidgetAttributes.swift */,
 				040B6B702ECA77330062FF0A /* MotoGyroWidgetExtension.entitlements */,
 				040B69022ECA33D20062FF0A /* motogyro */,
 				040B69152ECA33D40062FF0A /* motogyroTests */,
@@ -352,6 +356,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				040B6B742ECA7C3F0062FF0A /* MotoGyroWidgetAttributes.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -373,6 +378,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				040B6B752ECA7C3F0062FF0A /* MotoGyroWidgetAttributes.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -530,6 +536,7 @@
 				INFOPLIST_FILE = motogyro/Info.plist;
 				INFOPLIST_KEY_NSLocationAlwaysAndWhenInUseUsageDescription = "We need continuous location access to track your speed in the background and provide real-time lean angle data even when the app is not visible.";
 				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "We need your location to measure your speed while riding and enable lean angle tracking at safe speeds.";
+				INFOPLIST_KEY_NSSupportsLiveActivities = YES;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -567,6 +574,7 @@
 				INFOPLIST_FILE = motogyro/Info.plist;
 				INFOPLIST_KEY_NSLocationAlwaysAndWhenInUseUsageDescription = "We need continuous location access to track your speed in the background and provide real-time lean angle data even when the app is not visible.";
 				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "We need your location to measure your speed while riding and enable lean angle tracking at safe speeds.";
+				INFOPLIST_KEY_NSSupportsLiveActivities = YES;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
