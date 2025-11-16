@@ -11,18 +11,14 @@ import SwiftUI
 
 struct MotoGyroWidgetLiveActivity: Widget {
     var body: some WidgetConfiguration {
-        print("🟢 WIDGET CONFIGURATION CALLED")
-        return ActivityConfiguration(for: MotoGyroWidgetAttributes.self) { context in
-            print("🟡 LOCK SCREEN CLOSURE CALLED")
+        ActivityConfiguration(for: MotoGyroWidgetAttributes.self) { context in
             // Lock screen/banner UI goes here
             LockScreenLiveActivityView(context: context)
 
         } dynamicIsland: { context in
-            print("🔵 DYNAMIC ISLAND CLOSURE CALLED")
-            return DynamicIsland {
+            DynamicIsland {
                 // Expanded UI goes here
                 DynamicIslandExpandedRegion(.leading) {
-                    print("🟣 EXPANDED LEADING REGION")
                     VStack(alignment: .leading, spacing: 4) {
                         Text("SPEED")
                             .font(.caption2)
@@ -72,24 +68,21 @@ struct MotoGyroWidgetLiveActivity: Widget {
                     .padding(.top, 4)
                 }
             } compactLeading: {
-                print("🟠 COMPACT LEADING")
-                return HStack(spacing: 2) {
+                HStack(spacing: 2) {
                     Image(systemName: "gauge.with.needle")
                         .font(.system(size: 12))
                     Text("\(Int(context.state.currentSpeed))")
                         .font(.system(size: 12, weight: .semibold))
                 }
             } compactTrailing: {
-                print("🟤 COMPACT TRAILING")
-                return HStack(spacing: 2) {
+                HStack(spacing: 2) {
                     Text("\(Int(abs(context.state.currentLeanAngle)))°")
                         .font(.system(size: 12, weight: .semibold))
                     Image(systemName: "arrow.left.and.right")
                         .font(.system(size: 10))
                 }
             } minimal: {
-                print("⚪ MINIMAL")
-                return Image(systemName: "motorcycle")
+                Image(systemName: "motorcycle")
                     .font(.system(size: 14))
             }
             .keylineTint(.green)
@@ -101,7 +94,6 @@ struct LockScreenLiveActivityView: View {
     let context: ActivityViewContext<MotoGyroWidgetAttributes>
 
     var body: some View {
-        let _ = print("🔴 LOCKSCREEN VIEW RENDERING - Speed: \(context.state.currentSpeed), Lean: \(context.state.currentLeanAngle)")
         VStack(spacing: 12) {
             HStack {
                 Image(systemName: "motorcycle")
