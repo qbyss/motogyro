@@ -130,14 +130,18 @@ struct AngleScaleView: View {
     var body: some View {
         GeometryReader { geometry in
             let size = min(geometry.size.width, geometry.size.height)
-            let radius = size * 0.52
+            let arcRadius = size * 0.55 // Arc positioned outside the circle
 
             ZStack {
+                // Draw the arc line
+                ArcLine(radius: arcRadius)
+                    .stroke(Color.black, lineWidth: 3)
+
                 // Graduation marks every 5 degrees
                 ForEach(Array(stride(from: -50, through: 50, by: 5)), id: \.self) { angle in
                     ScaleMarkView(
                         angle: angle,
-                        radius: radius,
+                        radius: arcRadius,
                         isMajor: angle % 10 == 0,
                         isLabeled: [0, 10, 20, 30, 40, 50, -10, -20, -30, -40, -50].contains(angle)
                     )
@@ -147,7 +151,7 @@ struct AngleScaleView: View {
                 ForEach([0, 10, 20, 30, 40, 50, -10, -20, -30, -40, -50], id: \.self) { angle in
                     AngleLabelView(
                         angle: angle,
-                        radius: radius,
+                        radius: arcRadius,
                         size: size
                     )
                 }
@@ -159,6 +163,26 @@ struct AngleScaleView: View {
     }
 }
 
+struct ArcLine: Shape {
+    let radius: CGFloat
+
+    func path(in rect: CGRect) -> Path {
+        var path = Path()
+        let center = CGPoint(x: rect.midX, y: rect.midY)
+
+        // Draw arc from -50° to +50° (converting to radians and adjusting for coordinate system)
+        path.addArc(
+            center: center,
+            radius: radius,
+            startAngle: .degrees(-140), // -50° from top (90° - 50° = 40°, but flipped = -140°)
+            endAngle: .degrees(-40),    // +50° from top (90° + 50° = 140°, but flipped = -40°)
+            clockwise: false
+        )
+
+        return path
+    }
+}
+
 struct ScaleMarkView: View {
     let angle: Int
     let radius: CGFloat
@@ -166,19 +190,24 @@ struct ScaleMarkView: View {
     let isLabeled: Bool
 
     var body: some View {
-        // Convert angle to position on arc
-        let angleInRadians = Double(angle) * .pi / 180.0
-        let x = radius * sin(angleInRadians)
-        let y = -radius * cos(angleInRadians)
+        GeometryReader { geometry in
+            let size = min(geometry.size.width, geometry.size.height)
+            let center = CGPoint(x: size / 2, y: size / 2)
 
-        let markHeight: CGFloat = isLabeled ? 25 : (isMajor ? 18 : 10)
+            // Convert angle to position on arc
+            let angleInRadians = Double(angle) * .pi / 180.0
+            let x = center.x + radius * sin(angleInRadians)
+            let y = center.y - radius * cos(angleInRadians)
 
-        Rectangle()
-            .fill(Color.black)
-            .frame(width: 2.5, height: markHeight)
-            .offset(y: -radius + markHeight / 2)
-            .rotationEffect(.degrees(Double(angle)))
-            .position(x: x, y: y)
+            let markHeight: CGFloat = isLabeled ? 25 : (isMajor ? 18 : 12)
+
+            // Draw mark pointing inward (toward circle center)
+            Rectangle()
+                .fill(Color.black)
+                .frame(width: 2.5, height: markHeight)
+                .position(x: x, y: y - markHeight / 2)
+                .rotationEffect(.degrees(Double(angle)), anchor: UnitPoint(x: 0.5, y: 1))
+        }
     }
 }
 
@@ -189,7 +218,8 @@ struct AngleLabelView: View {
 
     var body: some View {
         let angleInRadians = Double(angle) * .pi / 180.0
-        let labelRadius = radius - 45
+        // Position labels outside the arc (further from center)
+        let labelRadius = radius + 35
         let x = labelRadius * sin(angleInRadians) + size / 2
         let y = -labelRadius * cos(angleInRadians) + size / 2
 
