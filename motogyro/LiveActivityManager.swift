@@ -8,6 +8,7 @@
 import Foundation
 import ActivityKit
 import SwiftUI
+import Combine
 
 class LiveActivityManager: ObservableObject {
     @Published var isActivityActive: Bool = false
