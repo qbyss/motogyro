@@ -520,27 +520,18 @@ struct SpeedSettingsView: View {
         NavigationView {
             Form {
                 Section(header: Text("Appearance")) {
-                    VStack(alignment: .leading, spacing: 8) {
-                        HStack {
-                            ForEach(ThemePreference.allCases, id: \.self) { preference in
-                                Button(action: {
-                                    print("🎨 Button tapped: \(preference.rawValue)")
-                                    themeManager.themePreference = preference
-                                }) {
-                                    Text(preference.rawValue)
-                                        .font(.system(size: 14, weight: themeManager.themePreference == preference ? .bold : .regular))
-                                        .foregroundColor(themeManager.themePreference == preference ? .white : .blue)
-                                        .padding(.vertical, 8)
-                                        .padding(.horizontal, 12)
-                                        .background(themeManager.themePreference == preference ? Color.blue : Color.clear)
-                                        .cornerRadius(8)
-                                }
-                            }
+                    Picker("Theme", selection: Binding(
+                        get: { themeManager.themePreference },
+                        set: { newValue in
+                            print("🎨 Picker setting: \(newValue.rawValue)")
+                            themeManager.themePreference = newValue
                         }
-                        Text("Current: \(themeManager.themePreference.rawValue)")
-                            .font(.caption)
-                            .foregroundColor(.gray)
+                    )) {
+                        Text("System").tag(ThemePreference.system)
+                        Text("Light").tag(ThemePreference.light)
+                        Text("Dark").tag(ThemePreference.dark)
                     }
+                    .pickerStyle(.segmented)
                 }
 
                 Section(header: Text("Speed Threshold")) {
