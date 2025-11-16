@@ -17,26 +17,11 @@ struct GyroscopeView: View {
     @State private var liveActivityEnabled = false
 
     var body: some View {
-        VStack(spacing: 20) {
-                // Speed and Live Activity toggle
-                VStack(spacing: 10) {
-                    Text("\(Int(locationManager.speed)) km/h")
-                        .font(.system(size: 32, weight: .bold))
-                        .foregroundColor(locationManager.isMoving ? .green : .gray)
+        ZStack {
+            Color.white
+                .ignoresSafeArea()
 
-                    Toggle("Dynamic Island", isOn: $liveActivityEnabled)
-                        .font(.system(size: 16, weight: .semibold))
-                        .padding(.horizontal, 40)
-                        .onChange(of: liveActivityEnabled) { newValue in
-                            if newValue {
-                                activityManager.startActivity()
-                            } else {
-                                activityManager.endActivity()
-                            }
-                        }
-                }
-                .padding(.top, 60)
-
+            VStack(spacing: 20) {
                 Spacer()
 
                 // Main gyroscope display
@@ -93,7 +78,31 @@ struct GyroscopeView: View {
                 }
                 .padding(.bottom, 50)
             }
-        .background(Color.white)
+
+            // Toggle overlay in top-right corner
+            VStack {
+                HStack {
+                    Spacer()
+                    Toggle("DI", isOn: $liveActivityEnabled)
+                        .labelsHidden()
+                        .padding(8)
+                        .background(Color.black.opacity(0.5))
+                        .cornerRadius(8)
+                        .onChange(of: liveActivityEnabled) { newValue in
+                            if newValue {
+                                activityManager.startActivity()
+                            } else {
+                                activityManager.endActivity()
+                            }
+                        }
+                }
+                .padding(.top, 20)
+                .padding(.trailing, 20)
+                Spacer()
+            }
+        }
+        .persistentSystemOverlays(.hidden)
+        .statusBarHidden()
         .onAppear {
             // Request location permissions and start tracking
             locationManager.requestPermissions()
