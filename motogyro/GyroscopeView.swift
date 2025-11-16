@@ -19,7 +19,7 @@ struct GyroscopeView: View {
             Color.white
                 .ignoresSafeArea()
 
-            VStack(spacing: 40) {
+            VStack(spacing: 20) {
                 // GPS Speed Display at top
                 SpeedDisplay(
                     currentSpeed: locationManager.useMetric ? locationManager.currentSpeed : locationManager.currentSpeedMPH,
@@ -32,6 +32,9 @@ struct GyroscopeView: View {
                 .onTapGesture {
                     showSpeedSettings.toggle()
                 }
+
+                Spacer()
+                    .frame(height: 40)
 
                 // Main gyroscope display
                 ZStack {
