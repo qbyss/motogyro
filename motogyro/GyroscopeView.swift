@@ -526,6 +526,9 @@ struct SpeedSettingsView: View {
                         }
                     }
                     .pickerStyle(.segmented)
+                    .onChange(of: themeManager.themePreference) { oldValue, newValue in
+                        print("🎨 Picker detected change from \(oldValue.rawValue) to \(newValue.rawValue)")
+                    }
                 }
 
                 Section(header: Text("Speed Threshold")) {

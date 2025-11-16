@@ -8,7 +8,7 @@
 import SwiftUI
 import Combine
 
-enum ThemePreference: String, CaseIterable {
+enum ThemePreference: String, CaseIterable, Hashable {
     case system = "System"
     case light = "Light"
     case dark = "Dark"
@@ -28,8 +28,9 @@ enum ThemePreference: String, CaseIterable {
 class ThemeManager: ObservableObject {
     @Published var themePreference: ThemePreference = .system {
         didSet {
-            // Save synchronously - without the redundant onChange, this is fast enough
+            print("🎨 Theme changed to: \(themePreference.rawValue)")
             UserDefaults.standard.set(themePreference.rawValue, forKey: "themePreference")
+            print("🎨 Saved to UserDefaults: \(themePreference.rawValue)")
         }
     }
 
@@ -37,7 +38,10 @@ class ThemeManager: ObservableObject {
         // Load saved theme preference
         if let savedTheme = UserDefaults.standard.string(forKey: "themePreference"),
            let preference = ThemePreference(rawValue: savedTheme) {
+            print("🎨 Loading saved theme: \(savedTheme)")
             themePreference = preference
+        } else {
+            print("🎨 No saved theme, using default: system")
         }
     }
 }
