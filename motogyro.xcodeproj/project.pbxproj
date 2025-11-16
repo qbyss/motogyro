@@ -6,6 +6,12 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		040B6B582ECA76DB0062FF0A /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 040B6B572ECA76DB0062FF0A /* WidgetKit.framework */; };
+		040B6B5A2ECA76DB0062FF0A /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 040B6B592ECA76DB0062FF0A /* SwiftUI.framework */; };
+		040B6B692ECA76DD0062FF0A /* MotoGyroWidgetExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 040B6B552ECA76DB0062FF0A /* MotoGyroWidgetExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+/* End PBXBuildFile section */
+
 /* Begin PBXContainerItemProxy section */
 		040B69132ECA33D40062FF0A /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -21,12 +27,37 @@
 			remoteGlobalIDString = 040B68FF2ECA33D20062FF0A;
 			remoteInfo = motogyro;
 		};
+		040B6B672ECA76DD0062FF0A /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 040B68F82ECA33D20062FF0A /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 040B6B542ECA76DB0062FF0A;
+			remoteInfo = MotoGyroWidgetExtension;
+		};
 /* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		040B6B6A2ECA76DD0062FF0A /* Embed Foundation Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				040B6B692ECA76DD0062FF0A /* MotoGyroWidgetExtension.appex in Embed Foundation Extensions */,
+			);
+			name = "Embed Foundation Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		040B69002ECA33D20062FF0A /* motogyro.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = motogyro.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		040B69122ECA33D40062FF0A /* motogyroTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = motogyroTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		040B691C2ECA33D40062FF0A /* motogyroUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = motogyroUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		040B6B552ECA76DB0062FF0A /* MotoGyroWidgetExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = MotoGyroWidgetExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		040B6B572ECA76DB0062FF0A /* WidgetKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WidgetKit.framework; path = System/Library/Frameworks/WidgetKit.framework; sourceTree = SDKROOT; };
+		040B6B592ECA76DB0062FF0A /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = System/Library/Frameworks/SwiftUI.framework; sourceTree = SDKROOT; };
+		040B6B702ECA77330062FF0A /* MotoGyroWidgetExtension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = MotoGyroWidgetExtension.entitlements; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -36,6 +67,13 @@
 				Info.plist,
 			);
 			target = 040B68FF2ECA33D20062FF0A /* motogyro */;
+		};
+		040B6B6E2ECA76DD0062FF0A /* Exceptions for "MotoGyroWidget" folder in "MotoGyroWidgetExtension" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = 040B6B542ECA76DB0062FF0A /* MotoGyroWidgetExtension */;
 		};
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
@@ -56,6 +94,14 @@
 		040B691F2ECA33D40062FF0A /* motogyroUITests */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			path = motogyroUITests;
+			sourceTree = "<group>";
+		};
+		040B6B5B2ECA76DB0062FF0A /* MotoGyroWidget */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				040B6B6E2ECA76DD0062FF0A /* Exceptions for "MotoGyroWidget" folder in "MotoGyroWidgetExtension" target */,
+			);
+			path = MotoGyroWidget;
 			sourceTree = "<group>";
 		};
 /* End PBXFileSystemSynchronizedRootGroup section */
@@ -82,15 +128,27 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		040B6B522ECA76DB0062FF0A /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				040B6B5A2ECA76DB0062FF0A /* SwiftUI.framework in Frameworks */,
+				040B6B582ECA76DB0062FF0A /* WidgetKit.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
 		040B68F72ECA33D20062FF0A = {
 			isa = PBXGroup;
 			children = (
+				040B6B702ECA77330062FF0A /* MotoGyroWidgetExtension.entitlements */,
 				040B69022ECA33D20062FF0A /* motogyro */,
 				040B69152ECA33D40062FF0A /* motogyroTests */,
 				040B691F2ECA33D40062FF0A /* motogyroUITests */,
+				040B6B5B2ECA76DB0062FF0A /* MotoGyroWidget */,
+				040B6B562ECA76DB0062FF0A /* Frameworks */,
 				040B69012ECA33D20062FF0A /* Products */,
 			);
 			sourceTree = "<group>";
@@ -101,8 +159,18 @@
 				040B69002ECA33D20062FF0A /* motogyro.app */,
 				040B69122ECA33D40062FF0A /* motogyroTests.xctest */,
 				040B691C2ECA33D40062FF0A /* motogyroUITests.xctest */,
+				040B6B552ECA76DB0062FF0A /* MotoGyroWidgetExtension.appex */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		040B6B562ECA76DB0062FF0A /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				040B6B572ECA76DB0062FF0A /* WidgetKit.framework */,
+				040B6B592ECA76DB0062FF0A /* SwiftUI.framework */,
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -115,10 +183,12 @@
 				040B68FC2ECA33D20062FF0A /* Sources */,
 				040B68FD2ECA33D20062FF0A /* Frameworks */,
 				040B68FE2ECA33D20062FF0A /* Resources */,
+				040B6B6A2ECA76DD0062FF0A /* Embed Foundation Extensions */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				040B6B682ECA76DD0062FF0A /* PBXTargetDependency */,
 			);
 			fileSystemSynchronizedGroups = (
 				040B69022ECA33D20062FF0A /* motogyro */,
@@ -176,6 +246,28 @@
 			productReference = 040B691C2ECA33D40062FF0A /* motogyroUITests.xctest */;
 			productType = "com.apple.product-type.bundle.ui-testing";
 		};
+		040B6B542ECA76DB0062FF0A /* MotoGyroWidgetExtension */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 040B6B6D2ECA76DD0062FF0A /* Build configuration list for PBXNativeTarget "MotoGyroWidgetExtension" */;
+			buildPhases = (
+				040B6B512ECA76DB0062FF0A /* Sources */,
+				040B6B522ECA76DB0062FF0A /* Frameworks */,
+				040B6B532ECA76DB0062FF0A /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			fileSystemSynchronizedGroups = (
+				040B6B5B2ECA76DB0062FF0A /* MotoGyroWidget */,
+			);
+			name = MotoGyroWidgetExtension;
+			packageProductDependencies = (
+			);
+			productName = MotoGyroWidgetExtension;
+			productReference = 040B6B552ECA76DB0062FF0A /* MotoGyroWidgetExtension.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -197,6 +289,9 @@
 						CreatedOnToolsVersion = 26.0.1;
 						TestTargetID = 040B68FF2ECA33D20062FF0A;
 					};
+					040B6B542ECA76DB0062FF0A = {
+						CreatedOnToolsVersion = 26.0.1;
+					};
 				};
 			};
 			buildConfigurationList = 040B68FB2ECA33D20062FF0A /* Build configuration list for PBXProject "motogyro" */;
@@ -216,6 +311,7 @@
 				040B68FF2ECA33D20062FF0A /* motogyro */,
 				040B69112ECA33D40062FF0A /* motogyroTests */,
 				040B691B2ECA33D40062FF0A /* motogyroUITests */,
+				040B6B542ECA76DB0062FF0A /* MotoGyroWidgetExtension */,
 			);
 		};
 /* End PBXProject section */
@@ -236,6 +332,13 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 		040B691A2ECA33D40062FF0A /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		040B6B532ECA76DB0062FF0A /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -266,6 +369,13 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		040B6B512ECA76DB0062FF0A /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
@@ -278,6 +388,11 @@
 			isa = PBXTargetDependency;
 			target = 040B68FF2ECA33D20062FF0A /* motogyro */;
 			targetProxy = 040B691D2ECA33D40062FF0A /* PBXContainerItemProxy */;
+		};
+		040B6B682ECA76DD0062FF0A /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 040B6B542ECA76DB0062FF0A /* MotoGyroWidgetExtension */;
+			targetProxy = 040B6B672ECA76DD0062FF0A /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -406,6 +521,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = motogyro/motogyro.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 6L677X9XR2;
@@ -442,6 +558,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = motogyro/motogyro.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 6L677X9XR2;
@@ -553,6 +670,70 @@
 			};
 			name = Release;
 		};
+		040B6B6B2ECA76DD0062FF0A /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
+				CODE_SIGN_ENTITLEMENTS = MotoGyroWidgetExtension.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 6L677X9XR2;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = MotoGyroWidget/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = MotoGyroWidget;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				INFOPLIST_KEY_NSSupportsLiveActivities = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = net.spher.motogyro.MotoGyroWidget;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		040B6B6C2ECA76DD0062FF0A /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
+				CODE_SIGN_ENTITLEMENTS = MotoGyroWidgetExtension.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 6L677X9XR2;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = MotoGyroWidget/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = MotoGyroWidget;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				INFOPLIST_KEY_NSSupportsLiveActivities = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = net.spher.motogyro.MotoGyroWidget;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -588,6 +769,15 @@
 			buildConfigurations = (
 				040B692D2ECA33D40062FF0A /* Debug */,
 				040B692E2ECA33D40062FF0A /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		040B6B6D2ECA76DD0062FF0A /* Build configuration list for PBXNativeTarget "MotoGyroWidgetExtension" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				040B6B6B2ECA76DD0062FF0A /* Debug */,
+				040B6B6C2ECA76DD0062FF0A /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
