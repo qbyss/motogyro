@@ -141,21 +141,11 @@ struct HorizonGraduationMark: View {
 
     var body: some View {
         // Pattern: long (±80), short (±50), long (±20)
-        let markWidth: CGFloat
         let absOffset = abs(yOffset)
-
-        if absOffset == 80 {
-            markWidth = 120  // Farthest: long
-        } else if absOffset == 50 {
-            markWidth = 60   // Middle: short
-        } else {
-            markWidth = 100  // Closest: long
-        }
-
+        let markWidth: CGFloat = absOffset == 80 ? 120 : (absOffset == 50 ? 60 : 100)
         let markHeight: CGFloat = 3
 
-        // Create a horizontal line positioned at Y offset
-        Rectangle()
+        return Rectangle()
             .fill(Color.white)
             .frame(width: markWidth, height: markHeight)
             .offset(x: 0, y: CGFloat(yOffset))
