@@ -19,7 +19,7 @@ struct GyroscopeView: View {
             Color.white
                 .ignoresSafeArea()
 
-            VStack(spacing: 20) {
+            VStack(spacing: 40) {
                 // GPS Speed Display at top
                 SpeedDisplay(
                     currentSpeed: locationManager.useMetric ? locationManager.currentSpeed : locationManager.currentSpeedMPH,
@@ -321,7 +321,7 @@ struct ScaleMarkView: View {
         if isSpecialMark {
             // Mark extends both inward and outward through the arc
             let innerMarkLength: CGFloat = 20
-            let outerMarkLength: CGFloat = 10
+            let outerMarkLength: CGFloat = 15
 
             let innerRadius = radius - innerMarkLength
             let outerRadius = radius + outerMarkLength
@@ -335,10 +335,10 @@ struct ScaleMarkView: View {
                 path.move(to: CGPoint(x: outerX, y: outerY))
                 path.addLine(to: CGPoint(x: innerX, y: innerY))
             }
-            .stroke(Color.black, lineWidth: 2.5)
+            .stroke(Color.black, lineWidth: 5.5)
         } else {
             // Regular marks only extend inward
-            let markLength: CGFloat = 20
+            let markLength: CGFloat = 15
             let innerRadius = radius - markLength
 
             let arcX = center.x + radius * sin(angleInRadians)
@@ -458,7 +458,7 @@ struct SpeedDisplay: View {
                         .font(.system(size: 12, weight: .bold))
                         .foregroundColor(.gray)
                     Text(String(format: "%.0f", maxSpeed))
-                        .font(.system(size: 24, weight: .bold))
+                        .font(.system(size: 28, weight: .bold))
                         .foregroundColor(.black)
                     Text(useMetric ? "km/h" : "mph")
                         .font(.system(size: 11, weight: .medium))
