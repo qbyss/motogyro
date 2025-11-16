@@ -10,6 +10,8 @@
 		040B69402ECA46A40062FF0A /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 040B693F2ECA46A40062FF0A /* WidgetKit.framework */; };
 		040B69422ECA46A40062FF0A /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 040B69412ECA46A40062FF0A /* SwiftUI.framework */; };
 		040B69512ECA46A50062FF0A /* LeanAngleWidgetExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 040B693D2ECA46A40062FF0A /* LeanAngleWidgetExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		040B6A1D2ECA58650062FF0A /* LeanAngleActivityAttributes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 040B6A1C2ECA58650062FF0A /* LeanAngleActivityAttributes.swift */; };
+		040B6A1E2ECA58650062FF0A /* LeanAngleActivityAttributes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 040B6A1C2ECA58650062FF0A /* LeanAngleActivityAttributes.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -58,6 +60,7 @@
 		040B693F2ECA46A40062FF0A /* WidgetKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WidgetKit.framework; path = System/Library/Frameworks/WidgetKit.framework; sourceTree = SDKROOT; };
 		040B69412ECA46A40062FF0A /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = System/Library/Frameworks/SwiftUI.framework; sourceTree = SDKROOT; };
 		040B695A2ECA47860062FF0A /* LeanAngleWidgetExtension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = LeanAngleWidgetExtension.entitlements; sourceTree = "<group>"; };
+		040B6A1C2ECA58650062FF0A /* LeanAngleActivityAttributes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LeanAngleActivityAttributes.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -143,6 +146,7 @@
 		040B68F72ECA33D20062FF0A = {
 			isa = PBXGroup;
 			children = (
+				040B6A1C2ECA58650062FF0A /* LeanAngleActivityAttributes.swift */,
 				040B695A2ECA47860062FF0A /* LeanAngleWidgetExtension.entitlements */,
 				040B69022ECA33D20062FF0A /* motogyro */,
 				040B69152ECA33D40062FF0A /* motogyroTests */,
@@ -352,6 +356,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				040B6A1E2ECA58650062FF0A /* LeanAngleActivityAttributes.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -373,6 +378,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				040B6A1D2ECA58650062FF0A /* LeanAngleActivityAttributes.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
