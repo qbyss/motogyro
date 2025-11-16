@@ -201,11 +201,14 @@ struct ScaleMarkView: View {
         let innerX = center.x + innerRadius * sin(angleInRadians)
         let innerY = center.y - innerRadius * cos(angleInRadians)
 
+        // Make the 0° mark green to stand out
+        let markColor = angle == 0 ? Color.green : Color.black
+
         Path { path in
             path.move(to: CGPoint(x: arcX, y: arcY))
             path.addLine(to: CGPoint(x: innerX, y: innerY))
         }
-        .stroke(Color.black, lineWidth: 2.5)
+        .stroke(markColor, lineWidth: 2.5)
     }
 }
 
