@@ -18,6 +18,9 @@ class MotionManager: ObservableObject {
 
     private var calibrationOffset: Double = 0.0 // Offset to zero out mounting angle
 
+    /// Whether to track max lean angles (enabled when above speed threshold)
+    var isTrackingEnabled: Bool = true
+
     init() {
         startMotionUpdates()
     }
@@ -42,13 +45,15 @@ class MotionManager: ObservableObject {
             // Update current roll (positive = right lean, negative = left lean)
             self.roll = calibratedRoll
 
-            // Track maximum lean angles
-            if calibratedRoll > 0 {
-                // Right lean
-                self.maxLeanRight = max(self.maxLeanRight, calibratedRoll)
-            } else {
-                // Left lean
-                self.maxLeanLeft = max(self.maxLeanLeft, abs(calibratedRoll))
+            // Track maximum lean angles only if tracking is enabled
+            if self.isTrackingEnabled {
+                if calibratedRoll > 0 {
+                    // Right lean
+                    self.maxLeanRight = max(self.maxLeanRight, calibratedRoll)
+                } else {
+                    // Left lean
+                    self.maxLeanLeft = max(self.maxLeanLeft, abs(calibratedRoll))
+                }
             }
         }
     }

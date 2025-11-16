@@ -9,6 +9,9 @@ import SwiftUI
 
 struct GyroscopeView: View {
     @StateObject private var motionManager = MotionManager()
+    @StateObject private var locationManager = LocationManager()
+    @State private var showSpeedSettings = false
+    @State private var speedThresholdEnabled = true
 
     var body: some View {
         ZStack {
@@ -16,7 +19,18 @@ struct GyroscopeView: View {
                 .ignoresSafeArea()
 
             VStack(spacing: 20) {
-                Spacer()
+                // GPS Speed Display at top
+                SpeedDisplay(
+                    currentSpeed: locationManager.useMetric ? locationManager.currentSpeed : locationManager.currentSpeedMPH,
+                    maxSpeed: locationManager.maxSpeed,
+                    useMetric: locationManager.useMetric,
+                    isTracking: motionManager.isTrackingEnabled,
+                    isLocationAvailable: locationManager.isLocationAvailable
+                )
+                .padding(.top, 50)
+                .onTapGesture {
+                    showSpeedSettings.toggle()
+                }
 
                 // Main gyroscope display
                 ZStack {
@@ -44,14 +58,14 @@ struct GyroscopeView: View {
                         maxLeanRight: motionManager.maxLeanRight
                     )
 
-                    HStack(spacing: 20) {
+                    HStack(spacing: 15) {
                         Button(action: {
                             motionManager.calibrate()
                         }) {
                             Text("CALIBRATE")
-                                .font(.system(size: 18, weight: .bold))
+                                .font(.system(size: 16, weight: .bold))
                                 .foregroundColor(.white)
-                                .padding(.horizontal, 30)
+                                .padding(.horizontal, 20)
                                 .padding(.vertical, 12)
                                 .background(Color.blue)
                                 .cornerRadius(10)
@@ -59,13 +73,25 @@ struct GyroscopeView: View {
 
                         Button(action: {
                             motionManager.resetMaxLeans()
+                            locationManager.resetMaxSpeed()
                         }) {
                             Text("RESET")
-                                .font(.system(size: 18, weight: .bold))
+                                .font(.system(size: 16, weight: .bold))
                                 .foregroundColor(.white)
-                                .padding(.horizontal, 40)
+                                .padding(.horizontal, 25)
                                 .padding(.vertical, 12)
                                 .background(Color.red)
+                                .cornerRadius(10)
+                        }
+
+                        Button(action: {
+                            showSpeedSettings.toggle()
+                        }) {
+                            Image(systemName: "gearshape.fill")
+                                .font(.system(size: 20))
+                                .foregroundColor(.white)
+                                .padding(12)
+                                .background(Color.gray)
                                 .cornerRadius(10)
                         }
                     }
@@ -75,6 +101,32 @@ struct GyroscopeView: View {
         }
         .persistentSystemOverlays(.hidden)
         .statusBarHidden()
+        .sheet(isPresented: $showSpeedSettings) {
+            SpeedSettingsView(
+                locationManager: locationManager,
+                speedThresholdEnabled: $speedThresholdEnabled
+            )
+        }
+        .onAppear {
+            // Load saved preference
+            speedThresholdEnabled = UserDefaults.standard.object(forKey: "speedThresholdEnabled") as? Bool ?? true
+            locationManager.startTracking()
+            updateTrackingState()
+        }
+        .onChange(of: locationManager.currentSpeed) { _ in
+            updateTrackingState()
+        }
+        .onChange(of: speedThresholdEnabled) { _ in
+            updateTrackingState()
+        }
+    }
+
+    private func updateTrackingState() {
+        if speedThresholdEnabled {
+            motionManager.isTrackingEnabled = locationManager.isAboveSpeedThreshold
+        } else {
+            motionManager.isTrackingEnabled = true
+        }
     }
 }
 
@@ -370,6 +422,197 @@ struct MaxLeanDisplay: View {
         .padding()
         .background(Color.gray.opacity(0.2))
         .cornerRadius(10)
+    }
+}
+
+struct SpeedDisplay: View {
+    let currentSpeed: Double
+    let maxSpeed: Double
+    let useMetric: Bool
+    let isTracking: Bool
+    let isLocationAvailable: Bool
+
+    var body: some View {
+        VStack(spacing: 8) {
+            HStack(spacing: 15) {
+                // Current speed
+                VStack(spacing: 4) {
+                    Text("SPEED")
+                        .font(.system(size: 14, weight: .bold))
+                        .foregroundColor(.gray)
+                    Text(String(format: "%.0f", currentSpeed))
+                        .font(.system(size: 32, weight: .bold))
+                        .foregroundColor(isLocationAvailable ? .black : .red)
+                    Text(useMetric ? "km/h" : "mph")
+                        .font(.system(size: 12, weight: .medium))
+                        .foregroundColor(.gray)
+                }
+
+                Divider()
+                    .frame(height: 60)
+
+                // Max speed
+                VStack(spacing: 4) {
+                    Text("MAX")
+                        .font(.system(size: 14, weight: .bold))
+                        .foregroundColor(.gray)
+                    Text(String(format: "%.0f", maxSpeed))
+                        .font(.system(size: 28, weight: .bold))
+                        .foregroundColor(.black)
+                    Text(useMetric ? "km/h" : "mph")
+                        .font(.system(size: 12, weight: .medium))
+                        .foregroundColor(.gray)
+                }
+
+                Divider()
+                    .frame(height: 60)
+
+                // Tracking status
+                VStack(spacing: 4) {
+                    Text("TRACKING")
+                        .font(.system(size: 14, weight: .bold))
+                        .foregroundColor(.gray)
+                    Image(systemName: isTracking ? "checkmark.circle.fill" : "xmark.circle.fill")
+                        .font(.system(size: 32))
+                        .foregroundColor(isTracking ? .green : .red)
+                }
+            }
+
+            if !isLocationAvailable {
+                Text("GPS Not Available - Enable Location Services")
+                    .font(.system(size: 12, weight: .medium))
+                    .foregroundColor(.red)
+                    .padding(.top, 4)
+            }
+        }
+        .padding()
+        .background(Color.gray.opacity(0.15))
+        .cornerRadius(15)
+        .padding(.horizontal)
+    }
+}
+
+struct SpeedSettingsView: View {
+    @ObservedObject var locationManager: LocationManager
+    @Binding var speedThresholdEnabled: Bool
+    @Environment(\.dismiss) var dismiss
+
+    var body: some View {
+        NavigationView {
+            Form {
+                Section(header: Text("Speed Threshold")) {
+                    Toggle("Enable Speed Threshold", isOn: $speedThresholdEnabled)
+                        .onChange(of: speedThresholdEnabled) { newValue in
+                            if newValue {
+                                // Save preference
+                                UserDefaults.standard.set(true, forKey: "speedThresholdEnabled")
+                            } else {
+                                // Save preference
+                                UserDefaults.standard.set(false, forKey: "speedThresholdEnabled")
+                            }
+                        }
+
+                    if speedThresholdEnabled {
+                        VStack(alignment: .leading, spacing: 8) {
+                            Text("Minimum Speed: \(Int(locationManager.speedThreshold)) km/h")
+                                .font(.headline)
+                            Slider(value: $locationManager.speedThreshold, in: 0...50, step: 5)
+                            Text("Lean angle tracking only activates above this speed")
+                                .font(.caption)
+                                .foregroundColor(.gray)
+                        }
+                    }
+                }
+
+                Section(header: Text("Units")) {
+                    Toggle("Use Metric (km/h)", isOn: $locationManager.useMetric)
+                }
+
+                Section(header: Text("Location Permission")) {
+                    VStack(alignment: .leading, spacing: 12) {
+                        HStack {
+                            Text("Status:")
+                                .font(.headline)
+                            Text(authorizationStatusText)
+                                .foregroundColor(statusColor)
+                        }
+
+                        if locationManager.authorizationStatus == .notDetermined {
+                            Button("Request Permission") {
+                                locationManager.requestPermission()
+                            }
+                        } else if locationManager.authorizationStatus == .authorizedWhenInUse {
+                            Button("Enable Background Tracking") {
+                                locationManager.requestAlwaysAuthorization()
+                            }
+                        }
+
+                        if locationManager.authorizationStatus == .denied {
+                            Text("Please enable location services in Settings")
+                                .font(.caption)
+                                .foregroundColor(.red)
+                        }
+                    }
+                }
+
+                Section(header: Text("GPS Info")) {
+                    HStack {
+                        Text("Accuracy:")
+                        Spacer()
+                        Text(String(format: "±%.1fm", locationManager.accuracy))
+                    }
+
+                    HStack {
+                        Text("Altitude:")
+                        Spacer()
+                        Text(String(format: "%.0fm", locationManager.altitude))
+                    }
+
+                    HStack {
+                        Text("Heading:")
+                        Spacer()
+                        Text(String(format: "%.0f°", locationManager.heading))
+                    }
+                }
+            }
+            .navigationTitle("GPS Settings")
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    Button("Done") {
+                        dismiss()
+                    }
+                }
+            }
+        }
+    }
+
+    private var authorizationStatusText: String {
+        switch locationManager.authorizationStatus {
+        case .notDetermined:
+            return "Not Requested"
+        case .restricted:
+            return "Restricted"
+        case .denied:
+            return "Denied"
+        case .authorizedAlways:
+            return "Always (Background)"
+        case .authorizedWhenInUse:
+            return "When In Use"
+        @unknown default:
+            return "Unknown"
+        }
+    }
+
+    private var statusColor: Color {
+        switch locationManager.authorizationStatus {
+        case .authorizedAlways, .authorizedWhenInUse:
+            return .green
+        case .denied, .restricted:
+            return .red
+        default:
+            return .orange
+        }
     }
 }
 
