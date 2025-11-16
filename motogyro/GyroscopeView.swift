@@ -11,12 +11,14 @@ import CoreLocation
 struct GyroscopeView: View {
     @StateObject private var motionManager = MotionManager()
     @StateObject private var locationManager = LocationManager()
+    @StateObject private var themeManager = ThemeManager()
     @State private var showSpeedSettings = false
     @State private var speedThresholdEnabled = false
+    @Environment(\.colorScheme) var colorScheme
 
     var body: some View {
         ZStack {
-            Color.white
+            Color(colorScheme == .dark ? .black : .white)
                 .ignoresSafeArea()
 
             VStack(spacing: 20) {
@@ -104,9 +106,11 @@ struct GyroscopeView: View {
         }
         .persistentSystemOverlays(.hidden)
         .statusBarHidden()
+        .preferredColorScheme(themeManager.themePreference.colorScheme)
         .sheet(isPresented: $showSpeedSettings) {
             SpeedSettingsView(
                 locationManager: locationManager,
+                themeManager: themeManager,
                 speedThresholdEnabled: $speedThresholdEnabled
             )
         }
@@ -135,6 +139,7 @@ struct GyroscopeView: View {
 
 struct HorizonSphereView: View {
     let rollAngle: Double
+    @Environment(\.colorScheme) var colorScheme
 
     var body: some View {
         GeometryReader { geometry in
@@ -193,9 +198,9 @@ struct HorizonSphereView: View {
                 AirplaneSymbol()
                     .frame(width: size * 0.4, height: size * 0.15)
 
-                // Outer circle border (dark for visibility on white background)
+                // Outer circle border (adaptive for theme)
                 Circle()
-                    .stroke(Color.black.opacity(0.3), lineWidth: 3)
+                    .stroke(Color(colorScheme == .dark ? .white : .black).opacity(0.3), lineWidth: 3)
                     .frame(width: size * 0.95, height: size * 0.95)
             }
             .frame(width: size, height: size)
@@ -252,6 +257,7 @@ struct AirplaneSymbol: View {
 
 struct AngleScaleView: View {
     let rollAngle: Double
+    @Environment(\.colorScheme) var colorScheme
 
     var body: some View {
         GeometryReader { geometry in
@@ -261,7 +267,7 @@ struct AngleScaleView: View {
             ZStack {
                 // Draw the arc line
                 ArcLine(radius: arcRadius)
-                    .stroke(Color.black, lineWidth: 3)
+                    .stroke(Color(colorScheme == .dark ? .white : .black), lineWidth: 3)
 
                 // Graduation marks every 10 degrees
                 ForEach(Array(stride(from: -50, through: 50, by: 10)), id: \.self) { angle in
@@ -312,6 +318,7 @@ struct ScaleMarkView: View {
     let angle: Int
     let radius: CGFloat
     let size: CGFloat
+    @Environment(\.colorScheme) var colorScheme
 
     var body: some View {
         let angleInRadians = Double(angle) * .pi / 180.0
@@ -337,7 +344,7 @@ struct ScaleMarkView: View {
                 path.move(to: CGPoint(x: outerX, y: outerY))
                 path.addLine(to: CGPoint(x: innerX, y: innerY))
             }
-            .stroke(Color.black, lineWidth: 5.5)
+            .stroke(Color(colorScheme == .dark ? .white : .black), lineWidth: 5.5)
         } else {
             // Regular marks only extend inward
             let markLength: CGFloat = 15
@@ -352,7 +359,7 @@ struct ScaleMarkView: View {
                 path.move(to: CGPoint(x: arcX, y: arcY))
                 path.addLine(to: CGPoint(x: innerX, y: innerY))
             }
-            .stroke(Color.black, lineWidth: 2.5)
+            .stroke(Color(colorScheme == .dark ? .white : .black), lineWidth: 2.5)
         }
     }
 }
@@ -361,6 +368,7 @@ struct AngleLabelView: View {
     let angle: Int
     let radius: CGFloat
     let size: CGFloat
+    @Environment(\.colorScheme) var colorScheme
 
     var body: some View {
         let angleInRadians = Double(angle) * .pi / 180.0
@@ -373,7 +381,7 @@ struct AngleLabelView: View {
 
         Text(angle == 0 ? "0°" : "50°")
             .font(.system(size: 18, weight: .bold))
-            .foregroundColor(.black)
+            .foregroundColor(Color(colorScheme == .dark ? .white : .black))
             .position(x: x, y: y)
     }
 }
@@ -405,25 +413,26 @@ struct Triangle: Shape {
 struct MaxLeanDisplay: View {
     let maxLeanLeft: Double
     let maxLeanRight: Double
+    @Environment(\.colorScheme) var colorScheme
 
     var body: some View {
         VStack(spacing: 8) {
             Text("MAX LEAN")
                 .font(.system(size: 20, weight: .bold))
-                .foregroundColor(.black)
+                .foregroundColor(Color(colorScheme == .dark ? .white : .black))
 
             HStack(spacing: 40) {
                 Text("L: \(Int(maxLeanLeft))°")
                     .font(.system(size: 24, weight: .bold))
-                    .foregroundColor(.black)
+                    .foregroundColor(Color(colorScheme == .dark ? .white : .black))
 
                 Text("R: \(Int(maxLeanRight))°")
                     .font(.system(size: 24, weight: .bold))
-                    .foregroundColor(.black)
+                    .foregroundColor(Color(colorScheme == .dark ? .white : .black))
             }
         }
         .padding()
-        .background(Color.gray.opacity(0.2))
+        .background(Color.gray.opacity(colorScheme == .dark ? 0.3 : 0.2))
         .cornerRadius(10)
     }
 }
@@ -435,6 +444,7 @@ struct SpeedDisplay: View {
     let useMetric: Bool
     let isTracking: Bool
     let isLocationAvailable: Bool
+    @Environment(\.colorScheme) var colorScheme
 
     var body: some View {
         VStack(spacing: 4) {
@@ -446,7 +456,7 @@ struct SpeedDisplay: View {
                         .foregroundColor(.gray)
                     Text(String(format: "%.0f", abs(currentLeanAngle)))
                         .font(.system(size: 28, weight: .bold))
-                        .foregroundColor(.black)
+                        .foregroundColor(Color(colorScheme == .dark ? .white : .black))
                     Text("deg")
                         .font(.system(size: 11, weight: .medium))
                         .foregroundColor(.gray)
@@ -462,7 +472,7 @@ struct SpeedDisplay: View {
                         .foregroundColor(.gray)
                     Text(String(format: "%.0f", currentSpeed))
                         .font(.system(size: 28, weight: .bold))
-                        .foregroundColor(isLocationAvailable ? .black : .red)
+                        .foregroundColor(isLocationAvailable ? Color(colorScheme == .dark ? .white : .black) : .red)
                     Text(useMetric ? "km/h" : "mph")
                         .font(.system(size: 11, weight: .medium))
                         .foregroundColor(.gray)
@@ -478,7 +488,7 @@ struct SpeedDisplay: View {
                         .foregroundColor(.gray)
                     Text(String(format: "%.0f", maxSpeed))
                         .font(.system(size: 28, weight: .bold))
-                        .foregroundColor(.black)
+                        .foregroundColor(Color(colorScheme == .dark ? .white : .black))
                     Text(useMetric ? "km/h" : "mph")
                         .font(.system(size: 11, weight: .medium))
                         .foregroundColor(.gray)
@@ -502,12 +512,24 @@ struct SpeedDisplay: View {
 
 struct SpeedSettingsView: View {
     @ObservedObject var locationManager: LocationManager
+    @ObservedObject var themeManager: ThemeManager
     @Binding var speedThresholdEnabled: Bool
     @Environment(\.dismiss) var dismiss
 
     var body: some View {
         NavigationView {
             Form {
+                Section(header: Text("Appearance")) {
+                    Picker("Theme", selection: $themeManager.themePreference) {
+                        ForEach(ThemePreference.allCases, id: \.self) { preference in
+                            Text(preference.rawValue).tag(preference)
+                        }
+                    }
+                    .onChange(of: themeManager.themePreference) { _, newValue in
+                        themeManager.setTheme(newValue)
+                    }
+                }
+
                 Section(header: Text("Speed Threshold")) {
                     Toggle("Enable Speed Threshold", isOn: $speedThresholdEnabled)
                         .onChange(of: speedThresholdEnabled) { _, newValue in
