@@ -79,16 +79,12 @@ struct MotoGyroWidgetLiveActivity: Widget {
                     .padding(.top, 4)
                 }
             } compactLeading: {
-                Text("TEST")
-                    .font(.caption)
+                Text("45")
             } compactTrailing: {
-                Text("OK")
-                    .font(.caption)
+                Text("32°")
             } minimal: {
                 Text("M")
-                    .font(.caption)
             }
-            .keylineTint(Color.red)
         }
     }
 }
