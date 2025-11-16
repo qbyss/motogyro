@@ -16,6 +16,8 @@ class MotionManager: ObservableObject {
     @Published var maxLeanLeft: Double = 0.0 // Maximum left lean (positive value)
     @Published var maxLeanRight: Double = 0.0 // Maximum right lean (positive value)
 
+    private var calibrationOffset: Double = 0.0 // Offset to zero out mounting angle
+
     init() {
         startMotionUpdates()
     }
@@ -34,16 +36,19 @@ class MotionManager: ObservableObject {
             let rollRadians = motion.attitude.roll
             let rollDegrees = rollRadians * 180.0 / .pi
 
+            // Apply calibration offset to get calibrated roll angle
+            let calibratedRoll = rollDegrees - self.calibrationOffset
+
             // Update current roll (positive = right lean, negative = left lean)
-            self.roll = rollDegrees
+            self.roll = calibratedRoll
 
             // Track maximum lean angles
-            if rollDegrees > 0 {
+            if calibratedRoll > 0 {
                 // Right lean
-                self.maxLeanRight = max(self.maxLeanRight, rollDegrees)
+                self.maxLeanRight = max(self.maxLeanRight, calibratedRoll)
             } else {
                 // Left lean
-                self.maxLeanLeft = max(self.maxLeanLeft, abs(rollDegrees))
+                self.maxLeanLeft = max(self.maxLeanLeft, abs(calibratedRoll))
             }
         }
     }
@@ -51,6 +56,11 @@ class MotionManager: ObservableObject {
     func resetMaxLeans() {
         maxLeanLeft = 0.0
         maxLeanRight = 0.0
+    }
+
+    func calibrate() {
+        // Set current angle as zero point by adding current roll to offset
+        calibrationOffset += roll
     }
 
     deinit {

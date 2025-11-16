@@ -37,23 +37,37 @@ struct GyroscopeView: View {
 
                 Spacer()
 
-                // Max lean display and reset button
+                // Max lean display and buttons
                 VStack(spacing: 15) {
                     MaxLeanDisplay(
                         maxLeanLeft: motionManager.maxLeanLeft,
                         maxLeanRight: motionManager.maxLeanRight
                     )
 
-                    Button(action: {
-                        motionManager.resetMaxLeans()
-                    }) {
-                        Text("RESET")
-                            .font(.system(size: 18, weight: .bold))
-                            .foregroundColor(.white)
-                            .padding(.horizontal, 40)
-                            .padding(.vertical, 12)
-                            .background(Color.red)
-                            .cornerRadius(10)
+                    HStack(spacing: 20) {
+                        Button(action: {
+                            motionManager.calibrate()
+                        }) {
+                            Text("CALIBRATE")
+                                .font(.system(size: 18, weight: .bold))
+                                .foregroundColor(.white)
+                                .padding(.horizontal, 30)
+                                .padding(.vertical, 12)
+                                .background(Color.blue)
+                                .cornerRadius(10)
+                        }
+
+                        Button(action: {
+                            motionManager.resetMaxLeans()
+                        }) {
+                            Text("RESET")
+                                .font(.system(size: 18, weight: .bold))
+                                .foregroundColor(.white)
+                                .padding(.horizontal, 40)
+                                .padding(.vertical, 12)
+                                .background(Color.red)
+                                .cornerRadius(10)
+                        }
                     }
                 }
                 .padding(.bottom, 50)
