@@ -515,34 +515,32 @@ struct SpeedSettingsView: View {
     @ObservedObject var themeManager: ThemeManager
     @Binding var speedThresholdEnabled: Bool
     @Environment(\.dismiss) var dismiss
-    @State private var selectedIndex: Int = 0
 
     var body: some View {
         NavigationView {
             Form {
                 Section(header: Text("Appearance")) {
-                    Picker("Theme", selection: $selectedIndex) {
-                        Text("System").tag(0)
-                        Text("Light").tag(1)
-                        Text("Dark").tag(2)
-                    }
-                    .pickerStyle(.segmented)
-                    .onChange(of: selectedIndex) { _, newValue in
-                        print("🎨 Picker index changed to: \(newValue)")
-                        let themes: [ThemePreference] = [.system, .light, .dark]
-                        if newValue >= 0 && newValue < themes.count {
-                            themeManager.themePreference = themes[newValue]
+                    HStack(spacing: 0) {
+                        ForEach([ThemePreference.system, .light, .dark], id: \.self) { theme in
+                            Button(action: {
+                                print("🎨 Tapped: \(theme.rawValue)")
+                                themeManager.themePreference = theme
+                            }) {
+                                Text(theme.rawValue)
+                                    .font(.system(size: 13))
+                                    .foregroundColor(themeManager.themePreference == theme ? .white : .blue)
+                                    .frame(maxWidth: .infinity)
+                                    .padding(.vertical, 7)
+                                    .background(themeManager.themePreference == theme ? Color.blue : Color(UIColor.systemGray5))
+                            }
+                            .buttonStyle(.plain)
                         }
                     }
-                    .onAppear {
-                        // Map current theme to index
-                        switch themeManager.themePreference {
-                        case .system: selectedIndex = 0
-                        case .light: selectedIndex = 1
-                        case .dark: selectedIndex = 2
-                        }
-                        print("🎨 Initial theme index: \(selectedIndex)")
-                    }
+                    .clipShape(RoundedRectangle(cornerRadius: 8))
+                    .overlay(
+                        RoundedRectangle(cornerRadius: 8)
+                            .stroke(Color(UIColor.systemGray4), lineWidth: 0.5)
+                    )
                 }
 
                 Section(header: Text("Speed Threshold")) {
