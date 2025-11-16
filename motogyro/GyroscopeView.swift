@@ -520,14 +520,26 @@ struct SpeedSettingsView: View {
         NavigationView {
             Form {
                 Section(header: Text("Appearance")) {
-                    Picker("Theme", selection: $themeManager.themePreference) {
-                        ForEach(ThemePreference.allCases, id: \.self) { preference in
-                            Text(preference.rawValue).tag(preference)
+                    VStack(alignment: .leading, spacing: 8) {
+                        HStack {
+                            ForEach(ThemePreference.allCases, id: \.self) { preference in
+                                Button(action: {
+                                    print("🎨 Button tapped: \(preference.rawValue)")
+                                    themeManager.themePreference = preference
+                                }) {
+                                    Text(preference.rawValue)
+                                        .font(.system(size: 14, weight: themeManager.themePreference == preference ? .bold : .regular))
+                                        .foregroundColor(themeManager.themePreference == preference ? .white : .blue)
+                                        .padding(.vertical, 8)
+                                        .padding(.horizontal, 12)
+                                        .background(themeManager.themePreference == preference ? Color.blue : Color.clear)
+                                        .cornerRadius(8)
+                                }
+                            }
                         }
-                    }
-                    .pickerStyle(.segmented)
-                    .onChange(of: themeManager.themePreference) { oldValue, newValue in
-                        print("🎨 Picker detected change from \(oldValue.rawValue) to \(newValue.rawValue)")
+                        Text("Current: \(themeManager.themePreference.rawValue)")
+                            .font(.caption)
+                            .foregroundColor(.gray)
                     }
                 }
 
