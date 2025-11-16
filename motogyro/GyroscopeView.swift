@@ -112,7 +112,7 @@ struct HorizonSphereView: View {
                         .frame(width: size * 0.95, height: 3)
 
                     // Horizon graduation marks - horizontal lines at different Y positions
-                    ForEach([-60, -40, -20, 20, 40, 60], id: \.self) { yOffset in
+                    ForEach([-80, -50, -20, 20, 50, 80], id: \.self) { yOffset in
                         HorizonGraduationMark(yOffset: yOffset, size: size)
                     }
                 }
@@ -140,8 +140,18 @@ struct HorizonGraduationMark: View {
     let size: CGFloat
 
     var body: some View {
-        // HORIZONTAL line: width is WIDE, height is THIN
-        let markWidth: CGFloat = abs(yOffset) >= 40 ? 100 : 80
+        // Pattern: long (±80), short (±50), long (±20)
+        let markWidth: CGFloat
+        let absOffset = abs(yOffset)
+
+        if absOffset == 80 {
+            markWidth = 120  // Farthest: long
+        } else if absOffset == 50 {
+            markWidth = 60   // Middle: short
+        } else {
+            markWidth = 100  // Closest: long
+        }
+
         let markHeight: CGFloat = 3
 
         // Create a horizontal line positioned at Y offset
