@@ -75,19 +75,15 @@ struct MotoGyroWidgetLiveActivity: Widget {
                     .padding(.top, 4)
                 }
             } compactLeading: {
-                HStack(spacing: 2) {
-                    Text(String(format: "%.0f", context.state.currentSpeed))
-                        .font(.caption2)
-                        .fontWeight(.bold)
-                }
+                Text("MOTO")
+                    .font(.caption2)
+                    .fontWeight(.bold)
             } compactTrailing: {
-                HStack(spacing: 2) {
-                    Text(String(format: "%.0f°", abs(context.state.currentLeanAngle)))
-                        .font(.caption2)
-                        .fontWeight(.bold)
-                }
+                Text("GYRO")
+                    .font(.caption2)
+                    .fontWeight(.bold)
             } minimal: {
-                Image(systemName: "motorcycle")
+                Text("🏍️")
                     .font(.caption2)
             }
             .keylineTint(context.state.isTracking ? Color.green : Color.red)
