@@ -79,11 +79,11 @@ struct MotoGyroWidgetLiveActivity: Widget {
                     .padding(.top, 4)
                 }
             } compactLeading: {
-                Text("45")
+                Image(systemName: "speedometer")
             } compactTrailing: {
-                Text("32°")
+                Image(systemName: "arrow.left.and.right")
             } minimal: {
-                Text("M")
+                Image(systemName: "motorcycle")
             }
         }
     }
