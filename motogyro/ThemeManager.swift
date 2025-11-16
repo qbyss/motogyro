@@ -28,10 +28,8 @@ enum ThemePreference: String, CaseIterable {
 class ThemeManager: ObservableObject {
     @Published var themePreference: ThemePreference = .system {
         didSet {
-            // Save asynchronously to avoid blocking the UI
-            DispatchQueue.global(qos: .background).async {
-                UserDefaults.standard.set(self.themePreference.rawValue, forKey: "themePreference")
-            }
+            // Save synchronously - without the redundant onChange, this is fast enough
+            UserDefaults.standard.set(themePreference.rawValue, forKey: "themePreference")
         }
     }
 
