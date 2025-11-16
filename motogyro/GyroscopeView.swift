@@ -140,14 +140,14 @@ struct HorizonGraduationMark: View {
     let size: CGFloat
 
     var body: some View {
-        // VERTICAL lines (tall and thin) that cross the horizon
-        // Width is small (thin line), Height is large (extends up/down)
-        let markHeight: CGFloat = abs(offset) >= 100 ? 60 : 45  // Much taller
-        let markWidth: CGFloat = 4  // Width is the thickness (horizontal dimension)
+        // Create a VERTICAL line by rotating a horizontal rectangle 90 degrees
+        let markLength: CGFloat = abs(offset) >= 100 ? 60 : 45
+        let markThickness: CGFloat = 4
 
         Rectangle()
             .fill(Color.white)
-            .frame(width: markWidth, height: markHeight)  // Thin (4px) and TALL (45-60px)
+            .frame(width: markLength, height: markThickness)
+            .rotationEffect(.degrees(90))  // Rotate 90 degrees to make it VERTICAL
             .offset(x: CGFloat(offset), y: 0)
     }
 }
