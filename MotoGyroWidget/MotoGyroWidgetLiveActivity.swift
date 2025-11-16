@@ -78,10 +78,13 @@ struct MotoGyroWidgetLiveActivity: Widget {
                 }
             } compactLeading: {
                 Image(systemName: "speedometer")
+                    .foregroundColor(.white)
             } compactTrailing: {
                 Image(systemName: "arrow.left.and.right")
+                    .foregroundColor(.white)
             } minimal: {
                 Image(systemName: "motorcycle")
+                    .foregroundColor(.white)
             }
         }
     }
