@@ -6,6 +6,12 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		040B69402ECA46A40062FF0A /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 040B693F2ECA46A40062FF0A /* WidgetKit.framework */; };
+		040B69422ECA46A40062FF0A /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 040B69412ECA46A40062FF0A /* SwiftUI.framework */; };
+		040B69512ECA46A50062FF0A /* LeanAngleWidgetExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 040B693D2ECA46A40062FF0A /* LeanAngleWidgetExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+/* End PBXBuildFile section */
+
 /* Begin PBXContainerItemProxy section */
 		040B69132ECA33D40062FF0A /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -21,17 +27,62 @@
 			remoteGlobalIDString = 040B68FF2ECA33D20062FF0A;
 			remoteInfo = motogyro;
 		};
+		040B694F2ECA46A50062FF0A /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 040B68F82ECA33D20062FF0A /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 040B693C2ECA46A40062FF0A;
+			remoteInfo = LeanAngleWidgetExtension;
+		};
 /* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		040B69562ECA46A50062FF0A /* Embed Foundation Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				040B69512ECA46A50062FF0A /* LeanAngleWidgetExtension.appex in Embed Foundation Extensions */,
+			);
+			name = "Embed Foundation Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		040B69002ECA33D20062FF0A /* motogyro.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = motogyro.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		040B69122ECA33D40062FF0A /* motogyroTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = motogyroTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		040B691C2ECA33D40062FF0A /* motogyroUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = motogyroUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		040B693D2ECA46A40062FF0A /* LeanAngleWidgetExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = LeanAngleWidgetExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		040B693F2ECA46A40062FF0A /* WidgetKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WidgetKit.framework; path = System/Library/Frameworks/WidgetKit.framework; sourceTree = SDKROOT; };
+		040B69412ECA46A40062FF0A /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = System/Library/Frameworks/SwiftUI.framework; sourceTree = SDKROOT; };
+		040B695A2ECA47860062FF0A /* LeanAngleWidgetExtension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = LeanAngleWidgetExtension.entitlements; sourceTree = "<group>"; };
 /* End PBXFileReference section */
+
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		040B69522ECA46A50062FF0A /* Exceptions for "LeanAngleWidget" folder in "LeanAngleWidgetExtension" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = 040B693C2ECA46A40062FF0A /* LeanAngleWidgetExtension */;
+		};
+		040B69582ECA46EE0062FF0A /* Exceptions for "motogyro" folder in "motogyro" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = 040B68FF2ECA33D20062FF0A /* motogyro */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		040B69022ECA33D20062FF0A /* motogyro */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				040B69582ECA46EE0062FF0A /* Exceptions for "motogyro" folder in "motogyro" target */,
+			);
 			path = motogyro;
 			sourceTree = "<group>";
 		};
@@ -43,6 +94,14 @@
 		040B691F2ECA33D40062FF0A /* motogyroUITests */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			path = motogyroUITests;
+			sourceTree = "<group>";
+		};
+		040B69432ECA46A40062FF0A /* LeanAngleWidget */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				040B69522ECA46A50062FF0A /* Exceptions for "LeanAngleWidget" folder in "LeanAngleWidgetExtension" target */,
+			);
+			path = LeanAngleWidget;
 			sourceTree = "<group>";
 		};
 /* End PBXFileSystemSynchronizedRootGroup section */
@@ -69,15 +128,27 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		040B693A2ECA46A40062FF0A /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				040B69422ECA46A40062FF0A /* SwiftUI.framework in Frameworks */,
+				040B69402ECA46A40062FF0A /* WidgetKit.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
 		040B68F72ECA33D20062FF0A = {
 			isa = PBXGroup;
 			children = (
+				040B695A2ECA47860062FF0A /* LeanAngleWidgetExtension.entitlements */,
 				040B69022ECA33D20062FF0A /* motogyro */,
 				040B69152ECA33D40062FF0A /* motogyroTests */,
 				040B691F2ECA33D40062FF0A /* motogyroUITests */,
+				040B69432ECA46A40062FF0A /* LeanAngleWidget */,
+				040B693E2ECA46A40062FF0A /* Frameworks */,
 				040B69012ECA33D20062FF0A /* Products */,
 			);
 			sourceTree = "<group>";
@@ -88,8 +159,18 @@
 				040B69002ECA33D20062FF0A /* motogyro.app */,
 				040B69122ECA33D40062FF0A /* motogyroTests.xctest */,
 				040B691C2ECA33D40062FF0A /* motogyroUITests.xctest */,
+				040B693D2ECA46A40062FF0A /* LeanAngleWidgetExtension.appex */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		040B693E2ECA46A40062FF0A /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				040B693F2ECA46A40062FF0A /* WidgetKit.framework */,
+				040B69412ECA46A40062FF0A /* SwiftUI.framework */,
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -102,10 +183,12 @@
 				040B68FC2ECA33D20062FF0A /* Sources */,
 				040B68FD2ECA33D20062FF0A /* Frameworks */,
 				040B68FE2ECA33D20062FF0A /* Resources */,
+				040B69562ECA46A50062FF0A /* Embed Foundation Extensions */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				040B69502ECA46A50062FF0A /* PBXTargetDependency */,
 			);
 			fileSystemSynchronizedGroups = (
 				040B69022ECA33D20062FF0A /* motogyro */,
@@ -163,6 +246,28 @@
 			productReference = 040B691C2ECA33D40062FF0A /* motogyroUITests.xctest */;
 			productType = "com.apple.product-type.bundle.ui-testing";
 		};
+		040B693C2ECA46A40062FF0A /* LeanAngleWidgetExtension */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 040B69532ECA46A50062FF0A /* Build configuration list for PBXNativeTarget "LeanAngleWidgetExtension" */;
+			buildPhases = (
+				040B69392ECA46A40062FF0A /* Sources */,
+				040B693A2ECA46A40062FF0A /* Frameworks */,
+				040B693B2ECA46A40062FF0A /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			fileSystemSynchronizedGroups = (
+				040B69432ECA46A40062FF0A /* LeanAngleWidget */,
+			);
+			name = LeanAngleWidgetExtension;
+			packageProductDependencies = (
+			);
+			productName = LeanAngleWidgetExtension;
+			productReference = 040B693D2ECA46A40062FF0A /* LeanAngleWidgetExtension.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -184,6 +289,9 @@
 						CreatedOnToolsVersion = 26.0.1;
 						TestTargetID = 040B68FF2ECA33D20062FF0A;
 					};
+					040B693C2ECA46A40062FF0A = {
+						CreatedOnToolsVersion = 26.0.1;
+					};
 				};
 			};
 			buildConfigurationList = 040B68FB2ECA33D20062FF0A /* Build configuration list for PBXProject "motogyro" */;
@@ -203,6 +311,7 @@
 				040B68FF2ECA33D20062FF0A /* motogyro */,
 				040B69112ECA33D40062FF0A /* motogyroTests */,
 				040B691B2ECA33D40062FF0A /* motogyroUITests */,
+				040B693C2ECA46A40062FF0A /* LeanAngleWidgetExtension */,
 			);
 		};
 /* End PBXProject section */
@@ -223,6 +332,13 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 		040B691A2ECA33D40062FF0A /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		040B693B2ECA46A40062FF0A /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -253,6 +369,13 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		040B69392ECA46A40062FF0A /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
@@ -265,6 +388,11 @@
 			isa = PBXTargetDependency;
 			target = 040B68FF2ECA33D20062FF0A /* motogyro */;
 			targetProxy = 040B691D2ECA33D40062FF0A /* PBXContainerItemProxy */;
+		};
+		040B69502ECA46A50062FF0A /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 040B693C2ECA46A40062FF0A /* LeanAngleWidgetExtension */;
+			targetProxy = 040B694F2ECA46A50062FF0A /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -393,15 +521,21 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = motogyro/motogyro.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 6L677X9XR2;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = motogyro/Info.plist;
+				INFOPLIST_KEY_NSLocationAlwaysAndWhenInUseUsageDescription = "Location access keeps gyroscope sensors active while using GPS navigation";
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "Location access keeps gyroscope sensors active while using GPS navigation";
+				INFOPLIST_KEY_NSSupportsLiveActivities = YES;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
-				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 18.6;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -424,15 +558,21 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = motogyro/motogyro.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 6L677X9XR2;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = motogyro/Info.plist;
+				INFOPLIST_KEY_NSLocationAlwaysAndWhenInUseUsageDescription = "Location access keeps gyroscope sensors active while using GPS navigation";
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "Location access keeps gyroscope sensors active while using GPS navigation";
+				INFOPLIST_KEY_NSSupportsLiveActivities = YES;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
-				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 18.6;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -530,6 +670,68 @@
 			};
 			name = Release;
 		};
+		040B69542ECA46A50062FF0A /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
+				CODE_SIGN_ENTITLEMENTS = LeanAngleWidgetExtension.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 6L677X9XR2;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = LeanAngleWidget/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = LeanAngleWidget;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = net.spher.motogyro.LeanAngleWidget;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		040B69552ECA46A50062FF0A /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
+				CODE_SIGN_ENTITLEMENTS = LeanAngleWidgetExtension.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 6L677X9XR2;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = LeanAngleWidget/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = LeanAngleWidget;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = net.spher.motogyro.LeanAngleWidget;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -565,6 +767,15 @@
 			buildConfigurations = (
 				040B692D2ECA33D40062FF0A /* Debug */,
 				040B692E2ECA33D40062FF0A /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		040B69532ECA46A50062FF0A /* Build configuration list for PBXNativeTarget "LeanAngleWidgetExtension" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				040B69542ECA46A50062FF0A /* Debug */,
+				040B69552ECA46A50062FF0A /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
