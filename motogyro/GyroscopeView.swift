@@ -140,10 +140,11 @@ struct HorizonGraduationMark: View {
     let size: CGFloat
 
     var body: some View {
-        // Larger marks at bigger offsets
-        let markHeight: CGFloat = abs(offset) >= 100 ? 20 : 15
-        let markWidth: CGFloat = 2
+        // Larger marks at bigger offsets - these are VERTICAL lines that cross the horizon
+        let markHeight: CGFloat = abs(offset) >= 100 ? 30 : 20
+        let markWidth: CGFloat = 3
 
+        // Draw a vertical rectangle that crosses the horizon line
         Rectangle()
             .fill(Color.white)
             .frame(width: markWidth, height: markHeight)
