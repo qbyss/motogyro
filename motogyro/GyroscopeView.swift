@@ -12,7 +12,7 @@ struct GyroscopeView: View {
 
     var body: some View {
         ZStack {
-            Color.black
+            Color.white
                 .ignoresSafeArea()
 
             VStack(spacing: 20) {
@@ -24,8 +24,12 @@ struct GyroscopeView: View {
                     HorizonSphereView(rollAngle: motionManager.roll)
                         .frame(width: 350, height: 350)
 
-                    // Angle scale and arrow
-                    AngleScaleView(currentAngle: motionManager.roll)
+                    // Angle scale (rotates with horizon)
+                    AngleScaleView(rollAngle: motionManager.roll)
+                        .frame(width: 350, height: 350)
+
+                    // Fixed arrow pointing up
+                    FixedArrow()
                         .frame(width: 350, height: 350)
                 }
                 .frame(maxWidth: .infinity)
@@ -33,11 +37,25 @@ struct GyroscopeView: View {
 
                 Spacer()
 
-                // Max lean display
-                MaxLeanDisplay(
-                    maxLeanLeft: motionManager.maxLeanLeft,
-                    maxLeanRight: motionManager.maxLeanRight
-                )
+                // Max lean display and reset button
+                VStack(spacing: 15) {
+                    MaxLeanDisplay(
+                        maxLeanLeft: motionManager.maxLeanLeft,
+                        maxLeanRight: motionManager.maxLeanRight
+                    )
+
+                    Button(action: {
+                        motionManager.resetMaxLeans()
+                    }) {
+                        Text("RESET")
+                            .font(.system(size: 18, weight: .bold))
+                            .foregroundColor(.white)
+                            .padding(.horizontal, 40)
+                            .padding(.vertical, 12)
+                            .background(Color.red)
+                            .cornerRadius(10)
+                    }
+                }
                 .padding(.bottom, 50)
             }
         }
@@ -52,11 +70,6 @@ struct HorizonSphereView: View {
             let size = min(geometry.size.width, geometry.size.height)
 
             ZStack {
-                // Circle background
-                Circle()
-                    .fill(Color.black)
-                    .frame(width: size, height: size)
-
                 // Sky and ground hemispheres
                 ZStack {
                     // Sky (blue) - top half
@@ -100,9 +113,9 @@ struct HorizonSphereView: View {
                 .clipShape(Circle())
                 .frame(width: size * 0.95, height: size * 0.95)
 
-                // Outer circle border
+                // Outer circle border (dark for visibility on white background)
                 Circle()
-                    .stroke(Color.white.opacity(0.3), lineWidth: 2)
+                    .stroke(Color.black.opacity(0.3), lineWidth: 3)
                     .frame(width: size * 0.95, height: size * 0.95)
             }
             .frame(width: size, height: size)
@@ -112,35 +125,34 @@ struct HorizonSphereView: View {
 }
 
 struct AngleScaleView: View {
-    let currentAngle: Double
+    let rollAngle: Double
 
     var body: some View {
         GeometryReader { geometry in
             let size = min(geometry.size.width, geometry.size.height)
-            let radius = size * 0.48
+            let radius = size * 0.52
 
             ZStack {
-                // Curved scale arc
-                ForEach([-50, -40, -30, -20, -10, 0, 10, 20, 30, 40, 50], id: \.self) { angle in
+                // Graduation marks every 5 degrees
+                ForEach(Array(stride(from: -50, through: 50, by: 5)), id: \.self) { angle in
                     ScaleMarkView(
                         angle: angle,
                         radius: radius,
-                        isMajor: angle % 10 == 0
+                        isMajor: angle % 10 == 0,
+                        isLabeled: [0, 10, 20, 30, 40, 50, -10, -20, -30, -40, -50].contains(angle)
                     )
                 }
 
                 // Angle labels
-                ForEach([-50, -30, -10, 0, 10, 30, 50], id: \.self) { angle in
+                ForEach([0, 10, 20, 30, 40, 50, -10, -20, -30, -40, -50], id: \.self) { angle in
                     AngleLabelView(
                         angle: angle,
                         radius: radius,
                         size: size
                     )
                 }
-
-                // Triangle arrow pointing to current angle
-                TriangleArrow(currentAngle: currentAngle, radius: radius)
             }
+            .rotationEffect(.degrees(-rollAngle)) // Rotate with horizon
             .frame(width: size, height: size)
             .position(x: geometry.size.width / 2, y: geometry.size.height / 2)
         }
@@ -151,6 +163,7 @@ struct ScaleMarkView: View {
     let angle: Int
     let radius: CGFloat
     let isMajor: Bool
+    let isLabeled: Bool
 
     var body: some View {
         // Convert angle to position on arc
@@ -158,10 +171,12 @@ struct ScaleMarkView: View {
         let x = radius * sin(angleInRadians)
         let y = -radius * cos(angleInRadians)
 
+        let markHeight: CGFloat = isLabeled ? 25 : (isMajor ? 18 : 10)
+
         Rectangle()
-            .fill(Color.white)
-            .frame(width: 2, height: isMajor ? 20 : 12)
-            .offset(y: -radius + (isMajor ? 10 : 6))
+            .fill(Color.black)
+            .frame(width: 2.5, height: markHeight)
+            .offset(y: -radius + markHeight / 2)
             .rotationEffect(.degrees(Double(angle)))
             .position(x: x, y: y)
     }
@@ -174,35 +189,27 @@ struct AngleLabelView: View {
 
     var body: some View {
         let angleInRadians = Double(angle) * .pi / 180.0
-        let labelRadius = radius - 40
+        let labelRadius = radius - 45
         let x = labelRadius * sin(angleInRadians) + size / 2
         let y = -labelRadius * cos(angleInRadians) + size / 2
 
         Text("\(abs(angle))°")
-            .font(.system(size: 14, weight: .bold))
-            .foregroundColor(.white)
+            .font(.system(size: 16, weight: .bold))
+            .foregroundColor(.black)
             .position(x: x, y: y)
     }
 }
 
-struct TriangleArrow: View {
-    let currentAngle: Double
-    let radius: CGFloat
-
+struct FixedArrow: View {
     var body: some View {
-        // Clamp angle to -50 to 50 for display
-        let clampedAngle = max(-50, min(50, currentAngle))
-        let angleInRadians = clampedAngle * .pi / 180.0
-        let x = radius * sin(angleInRadians)
-        let y = -radius * cos(angleInRadians)
+        GeometryReader { geometry in
+            let size = min(geometry.size.width, geometry.size.height)
 
-        Triangle()
-            .fill(Color.red)
-            .frame(width: 20, height: 25)
-            .rotationEffect(.degrees(clampedAngle))
-            .offset(y: -radius + 30)
-            .rotationEffect(.degrees(clampedAngle))
-            .position(x: x, y: y)
+            Triangle()
+                .fill(Color.red)
+                .frame(width: 30, height: 35)
+                .position(x: size / 2, y: 20)
+        }
     }
 }
 
@@ -225,14 +232,14 @@ struct MaxLeanDisplay: View {
         HStack(spacing: 40) {
             Text("MAX LEAN L: \(Int(maxLeanLeft))°")
                 .font(.system(size: 24, weight: .bold))
-                .foregroundColor(.white)
+                .foregroundColor(.black)
 
             Text("MAX LEAN R: \(Int(maxLeanRight))°")
                 .font(.system(size: 24, weight: .bold))
-                .foregroundColor(.white)
+                .foregroundColor(.black)
         }
         .padding()
-        .background(Color.black.opacity(0.5))
+        .background(Color.gray.opacity(0.2))
         .cornerRadius(10)
     }
 }
