@@ -59,6 +59,8 @@ struct GyroscopeView: View {
                 .padding(.bottom, 50)
             }
         }
+        .persistentSystemOverlays(.hidden)
+        .statusBarHidden()
     }
 }
 
@@ -281,14 +283,20 @@ struct MaxLeanDisplay: View {
     let maxLeanRight: Double
 
     var body: some View {
-        HStack(spacing: 40) {
-            Text("MAX LEAN L: \(Int(maxLeanLeft))°")
-                .font(.system(size: 24, weight: .bold))
+        VStack(spacing: 8) {
+            Text("MAX LEAN")
+                .font(.system(size: 20, weight: .bold))
                 .foregroundColor(.black)
 
-            Text("MAX LEAN R: \(Int(maxLeanRight))°")
-                .font(.system(size: 24, weight: .bold))
-                .foregroundColor(.black)
+            HStack(spacing: 40) {
+                Text("L: \(Int(maxLeanLeft))°")
+                    .font(.system(size: 24, weight: .bold))
+                    .foregroundColor(.black)
+
+                Text("R: \(Int(maxLeanRight))°")
+                    .font(.system(size: 24, weight: .bold))
+                    .foregroundColor(.black)
+            }
         }
         .padding()
         .background(Color.gray.opacity(0.2))

@@ -10,6 +10,10 @@ import SwiftUI
 struct ContentView: View {
     var body: some View {
         GyroscopeView()
+            .onAppear {
+                // Lock orientation to portrait
+                AppDelegate.orientationLock = .portrait
+            }
     }
 }
 
