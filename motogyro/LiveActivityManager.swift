@@ -13,6 +13,8 @@ import Combine
 class LiveActivityManager: ObservableObject {
     @Published var isActivityActive: Bool = false
     private var currentActivity: Activity<MotoGyroWidgetAttributes>?
+    private var lastUpdateTime: Date?
+    private let updateInterval: TimeInterval = 0.5 // Update at most twice per second
 
     // Start the Live Activity
     func startActivity() {
@@ -69,9 +71,17 @@ class LiveActivityManager: ObservableObject {
         isTracking: Bool
     ) {
         guard let activity = currentActivity else {
-            print("📱 No active Live Activity to update")
             return
         }
+
+        // Throttle updates to avoid spamming
+        let now = Date()
+        if let lastUpdate = lastUpdateTime,
+           now.timeIntervalSince(lastUpdate) < updateInterval {
+            return
+        }
+
+        lastUpdateTime = now
 
         let updatedState = MotoGyroWidgetAttributes.ContentState(
             currentSpeed: speed,
