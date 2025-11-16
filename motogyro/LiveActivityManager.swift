@@ -50,7 +50,9 @@ class LiveActivityManager: ObservableObject {
             )
             isActivityActive = true
             print("📱 Live Activity started successfully! ID: \(currentActivity?.id ?? "unknown")")
-            print("📱 Activity state: \(currentActivity?.activityState.rawValue ?? "unknown")")
+            if let activity = currentActivity {
+                print("📱 Activity state: \(activity.activityState)")
+            }
         } catch {
             print("📱 Error starting Live Activity: \(error)")
             print("📱 Error details: \(error.localizedDescription)")
