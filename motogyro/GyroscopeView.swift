@@ -142,17 +142,13 @@ struct HorizonGraduationMark: View {
     var body: some View {
         // Vertical lines that extend above and below the horizon line
         let totalHeight: CGFloat = abs(offset) >= 100 ? 40 : 30
+        let markWidth: CGFloat = 3
 
-        // Vertical line crossing the horizon
-        Path { path in
-            let x = CGFloat(offset)
-            let yTop = -totalHeight / 2
-            let yBottom = totalHeight / 2
-
-            path.move(to: CGPoint(x: x, y: yTop))
-            path.addLine(to: CGPoint(x: x, y: yBottom))
-        }
-        .stroke(Color.white, lineWidth: 3)
+        // Use a thin vertical Rectangle
+        Rectangle()
+            .fill(Color.white)
+            .frame(width: markWidth, height: totalHeight)
+            .offset(x: CGFloat(offset), y: 0)
     }
 }
 
