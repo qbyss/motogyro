@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import CoreLocation
 
 struct GyroscopeView: View {
     @StateObject private var motionManager = MotionManager()
@@ -113,10 +114,10 @@ struct GyroscopeView: View {
             locationManager.startTracking()
             updateTrackingState()
         }
-        .onChange(of: locationManager.currentSpeed) { _ in
+        .onChange(of: locationManager.currentSpeed) {
             updateTrackingState()
         }
-        .onChange(of: speedThresholdEnabled) { _ in
+        .onChange(of: speedThresholdEnabled) {
             updateTrackingState()
         }
     }
@@ -502,14 +503,9 @@ struct SpeedSettingsView: View {
             Form {
                 Section(header: Text("Speed Threshold")) {
                     Toggle("Enable Speed Threshold", isOn: $speedThresholdEnabled)
-                        .onChange(of: speedThresholdEnabled) { newValue in
-                            if newValue {
-                                // Save preference
-                                UserDefaults.standard.set(true, forKey: "speedThresholdEnabled")
-                            } else {
-                                // Save preference
-                                UserDefaults.standard.set(false, forKey: "speedThresholdEnabled")
-                            }
+                        .onChange(of: speedThresholdEnabled) { _, newValue in
+                            // Save preference
+                            UserDefaults.standard.set(newValue, forKey: "speedThresholdEnabled")
                         }
 
                     if speedThresholdEnabled {
@@ -610,7 +606,9 @@ struct SpeedSettingsView: View {
             return .green
         case .denied, .restricted:
             return .red
-        default:
+        case .notDetermined:
+            return .orange
+        @unknown default:
             return .orange
         }
     }
