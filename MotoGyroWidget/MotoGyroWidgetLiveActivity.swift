@@ -54,23 +54,33 @@ struct MotoGyroWidgetLiveActivity: Widget {
                 }
 
                 DynamicIslandExpandedRegion(.bottom) {
-                    HStack(spacing: 20) {
-                        VStack(spacing: 2) {
-                            Text("MAX L")
-                                .font(.caption2)
+                    HStack(spacing: 8) {
+                        HStack(spacing: 4) {
+                            Image(systemName: "arrow.left")
+                                .font(.caption)
+                                .foregroundStyle(.green)
                             Text(String(format: "%.0f°", context.state.maxLeanLeft))
                                 .font(.callout)
                                 .fontWeight(.semibold)
+                                .foregroundStyle(.green)
+                                .monospacedDigit()
                                 .contentTransition(.identity)
                         }
 
-                        VStack(spacing: 2) {
-                            Text("MAX R")
-                                .font(.caption2)
+                        Text("MAX")
+                            .font(.caption2)
+                            .foregroundStyle(.secondary)
+
+                        HStack(spacing: 4) {
                             Text(String(format: "%.0f°", context.state.maxLeanRight))
                                 .font(.callout)
                                 .fontWeight(.semibold)
+                                .foregroundStyle(.red)
+                                .monospacedDigit()
                                 .contentTransition(.identity)
+                            Image(systemName: "arrow.right")
+                                .font(.caption)
+                                .foregroundStyle(.red)
                         }
                     }
                     .padding(.top, 4)
@@ -174,7 +184,7 @@ struct LockScreenLiveActivityView: View {
             }
 
             // Max leans
-            HStack(spacing: 40) {
+            HStack(spacing: 12) {
                 HStack(spacing: 4) {
                     Image(systemName: "arrow.left")
                         .font(.caption)
@@ -186,6 +196,10 @@ struct LockScreenLiveActivityView: View {
                         .monospacedDigit()
                         .contentTransition(.identity)
                 }
+
+                Text("MAX")
+                    .font(.caption)
+                    .foregroundColor(.gray)
 
                 HStack(spacing: 4) {
                     Text(String(format: "%.0f°", context.state.maxLeanRight))
