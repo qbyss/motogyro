@@ -515,32 +515,18 @@ struct SpeedSettingsView: View {
     @ObservedObject var themeManager: ThemeManager
     @Binding var speedThresholdEnabled: Bool
     @Environment(\.dismiss) var dismiss
+    @State private var localTheme: ThemePreference = .system
 
     var body: some View {
         NavigationView {
             Form {
                 Section(header: Text("Appearance")) {
-                    HStack(spacing: 0) {
-                        ForEach([ThemePreference.system, .light, .dark], id: \.self) { theme in
-                            Button(action: {
-                                print("🎨 Tapped: \(theme.rawValue)")
-                                themeManager.themePreference = theme
-                            }) {
-                                Text(theme.rawValue)
-                                    .font(.system(size: 13))
-                                    .foregroundColor(themeManager.themePreference == theme ? .white : .blue)
-                                    .frame(maxWidth: .infinity)
-                                    .padding(.vertical, 7)
-                                    .background(themeManager.themePreference == theme ? Color.blue : Color(UIColor.systemGray5))
-                            }
-                            .buttonStyle(.plain)
+                    Picker("Theme", selection: $localTheme) {
+                        ForEach(ThemePreference.allCases, id: \.self) { preference in
+                            Text(preference.rawValue).tag(preference)
                         }
                     }
-                    .clipShape(RoundedRectangle(cornerRadius: 8))
-                    .overlay(
-                        RoundedRectangle(cornerRadius: 8)
-                            .stroke(Color(UIColor.systemGray4), lineWidth: 0.5)
-                    )
+                    .pickerStyle(.segmented)
                 }
 
                 Section(header: Text("Speed Threshold")) {
@@ -621,6 +607,14 @@ struct SpeedSettingsView: View {
                         dismiss()
                     }
                 }
+            }
+            .onAppear {
+                localTheme = themeManager.themePreference
+                print("🎨 Sheet loaded with theme: \(localTheme.rawValue)")
+            }
+            .onChange(of: localTheme) { oldValue, newValue in
+                print("🎨 localTheme changed from \(oldValue.rawValue) to \(newValue.rawValue)")
+                themeManager.themePreference = newValue
             }
         }
     }
