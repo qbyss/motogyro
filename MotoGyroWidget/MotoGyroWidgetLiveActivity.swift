@@ -30,6 +30,7 @@ struct MotoGyroWidgetLiveActivity: Widget {
                                 .font(.caption)
                         }
                     }
+                    .padding(.leading, 8)
                 }
 
                 DynamicIslandExpandedRegion(.trailing) {
@@ -45,6 +46,7 @@ struct MotoGyroWidgetLiveActivity: Widget {
                                 .foregroundStyle(.green)
                         }
                     }
+                    .padding(.trailing, 8)
                 }
 
                 DynamicIslandExpandedRegion(.bottom) {
@@ -71,21 +73,27 @@ struct MotoGyroWidgetLiveActivity: Widget {
                 HStack(spacing: 2) {
                     Image(systemName: "arrow.left")
                         .font(.system(size: 14, weight: .semibold))
+                        .foregroundStyle(.green)
                     Text("\(Int(context.state.maxLeanLeft))")
                         .font(.system(size: 20, weight: .heavy))
                         .monospacedDigit()
+                        .foregroundStyle(.green)
                     Text("°")
                         .font(.system(size: 16, weight: .bold))
+                        .foregroundStyle(.green)
                 }
             } compactTrailing: {
                 HStack(spacing: 2) {
                     Text("\(Int(context.state.maxLeanRight))")
                         .font(.system(size: 20, weight: .heavy))
                         .monospacedDigit()
+                        .foregroundStyle(.red)
                     Text("°")
                         .font(.system(size: 16, weight: .bold))
+                        .foregroundStyle(.red)
                     Image(systemName: "arrow.right")
                         .font(.system(size: 14, weight: .semibold))
+                        .foregroundStyle(.red)
                 }
             } minimal: {
                 Image(systemName: "motorcycle")
