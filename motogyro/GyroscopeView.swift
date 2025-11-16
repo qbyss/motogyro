@@ -95,11 +95,10 @@ struct GyroscopeView: View {
                             .foregroundColor(.white)
                             .padding(12)
                             .background(Color.gray)
-                            .cornerRadius(10)
+                            .clipShape(Circle())
                     }
                     .padding(.top, 10)
                 }
-                .padding(.bottom, 50)
             }
         }
         .persistentSystemOverlays(.hidden)
