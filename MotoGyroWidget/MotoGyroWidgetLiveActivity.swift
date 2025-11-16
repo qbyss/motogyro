@@ -79,26 +79,14 @@ struct MotoGyroWidgetLiveActivity: Widget {
                     .padding(.top, 4)
                 }
             } compactLeading: {
-                HStack(spacing: 2) {
-                    Text(String(format: "%.0f", context.state.currentSpeed))
-                        .font(.system(size: 14, weight: .bold))
-                        .foregroundColor(.white)
-                    Text(context.state.useMetric ? "km/h" : "mph")
-                        .font(.system(size: 10))
-                        .foregroundColor(.white.opacity(0.8))
-                }
+                Text("TEST")
+                    .font(.caption)
             } compactTrailing: {
-                HStack(spacing: 2) {
-                    Text(String(format: "%.0f°", abs(context.state.currentLeanAngle)))
-                        .font(.system(size: 14, weight: .bold))
-                        .foregroundColor(.white)
-                    Image(systemName: context.state.currentLeanAngle > 0 ? "arrow.right" : "arrow.left")
-                        .font(.system(size: 10))
-                        .foregroundColor(context.state.isTracking ? .green : .red)
-                }
+                Text("OK")
+                    .font(.caption)
             } minimal: {
-                Image(systemName: "motorcycle")
-                    .foregroundColor(.orange)
+                Text("M")
+                    .font(.caption)
             }
             .keylineTint(Color.red)
         }
