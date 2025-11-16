@@ -434,46 +434,46 @@ struct SpeedDisplay: View {
     let isLocationAvailable: Bool
 
     var body: some View {
-        VStack(spacing: 6) {
+        VStack(spacing: 4) {
             HStack(spacing: 30) {
                 // Current speed
-                VStack(spacing: 4) {
+                VStack(spacing: 2) {
                     Text("SPEED")
-                        .font(.system(size: 14, weight: .bold))
+                        .font(.system(size: 12, weight: .bold))
                         .foregroundColor(.gray)
                     Text(String(format: "%.0f", currentSpeed))
-                        .font(.system(size: 32, weight: .bold))
+                        .font(.system(size: 28, weight: .bold))
                         .foregroundColor(isLocationAvailable ? .black : .red)
                     Text(useMetric ? "km/h" : "mph")
-                        .font(.system(size: 12, weight: .medium))
+                        .font(.system(size: 11, weight: .medium))
                         .foregroundColor(.gray)
                 }
 
                 Divider()
-                    .frame(height: 60)
+                    .frame(height: 50)
 
                 // Max speed
-                VStack(spacing: 4) {
+                VStack(spacing: 2) {
                     Text("MAX")
-                        .font(.system(size: 14, weight: .bold))
+                        .font(.system(size: 12, weight: .bold))
                         .foregroundColor(.gray)
                     Text(String(format: "%.0f", maxSpeed))
-                        .font(.system(size: 28, weight: .bold))
+                        .font(.system(size: 24, weight: .bold))
                         .foregroundColor(.black)
                     Text(useMetric ? "km/h" : "mph")
-                        .font(.system(size: 12, weight: .medium))
+                        .font(.system(size: 11, weight: .medium))
                         .foregroundColor(.gray)
                 }
             }
 
             if !isLocationAvailable {
                 Text("GPS Not Available - Enable Location Services")
-                    .font(.system(size: 11, weight: .medium))
+                    .font(.system(size: 10, weight: .medium))
                     .foregroundColor(.red)
                     .padding(.top, 2)
             }
         }
-        .padding(.vertical, 12)
+        .padding(.vertical, 8)
         .padding(.horizontal, 20)
         .background(isTracking ? Color.green.opacity(0.2) : Color.red.opacity(0.2))
         .cornerRadius(12)

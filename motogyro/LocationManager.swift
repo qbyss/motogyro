@@ -73,11 +73,21 @@ class LocationManager: NSObject, ObservableObject {
             speedThreshold = 10.0 // Default to 10 km/h
         }
 
-        // Default to metric (true) if not set
-        if UserDefaults.standard.object(forKey: "useMetric") != nil {
-            useMetric = UserDefaults.standard.bool(forKey: "useMetric")
+        // Force metric by default for Europe
+        // Check if we've migrated to new GPS version
+        if !UserDefaults.standard.bool(forKey: "gpsVersionMigrated") {
+            // First time with GPS feature - force metric
+            useMetric = true
+            UserDefaults.standard.set(true, forKey: "useMetric")
+            UserDefaults.standard.set(true, forKey: "gpsVersionMigrated")
         } else {
-            useMetric = true // Default to metric for Europe
+            // Load saved preference
+            if let savedMetric = UserDefaults.standard.object(forKey: "useMetric") as? Bool {
+                useMetric = savedMetric
+            } else {
+                useMetric = true
+                UserDefaults.standard.set(true, forKey: "useMetric")
+            }
         }
 
         // Configure location manager
