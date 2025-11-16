@@ -26,11 +26,8 @@ class LiveActivityManager: ObservableObject {
             return
         }
 
-        // Don't start if already active
-        if currentActivity != nil {
-            print("📱 Live Activity already active, ID: \(currentActivity?.id ?? "unknown")")
-            return
-        }
+        // End all existing activities first to prevent duplicates
+        endAllActivities()
 
         let attributes = MotoGyroWidgetAttributes(rideStartTime: Date())
         let initialState = MotoGyroWidgetAttributes.ContentState(
@@ -100,6 +97,22 @@ class LiveActivityManager: ObservableObject {
                 )
             )
         }
+    }
+
+    // End all existing Live Activities (prevents duplicates)
+    private func endAllActivities() {
+        let activities = Activity<MotoGyroWidgetAttributes>.activities
+        print("📱 Found \(activities.count) existing activities")
+
+        for activity in activities {
+            print("📱 Ending existing activity: \(activity.id)")
+            Task {
+                await activity.end(nil, dismissalPolicy: .immediate)
+            }
+        }
+
+        currentActivity = nil
+        isActivityActive = false
     }
 
     // Stop the Live Activity
