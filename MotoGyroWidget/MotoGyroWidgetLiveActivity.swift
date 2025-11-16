@@ -54,32 +54,33 @@ struct MotoGyroWidgetLiveActivity: Widget {
                 }
 
                 DynamicIslandExpandedRegion(.bottom) {
-                    HStack(spacing: 8) {
+                    HStack(spacing: 10) {
                         HStack(spacing: 4) {
                             Image(systemName: "arrow.left")
-                                .font(.caption)
+                                .font(.body)
                                 .foregroundStyle(.green)
                             Text(String(format: "%.0f°", context.state.maxLeanLeft))
-                                .font(.callout)
-                                .fontWeight(.semibold)
+                                .font(.title3)
+                                .fontWeight(.bold)
                                 .foregroundStyle(.green)
                                 .monospacedDigit()
                                 .contentTransition(.identity)
                         }
 
                         Text("MAX")
-                            .font(.caption2)
+                            .font(.callout)
+                            .fontWeight(.semibold)
                             .foregroundStyle(.secondary)
 
                         HStack(spacing: 4) {
                             Text(String(format: "%.0f°", context.state.maxLeanRight))
-                                .font(.callout)
-                                .fontWeight(.semibold)
+                                .font(.title3)
+                                .fontWeight(.bold)
                                 .foregroundStyle(.red)
                                 .monospacedDigit()
                                 .contentTransition(.identity)
                             Image(systemName: "arrow.right")
-                                .font(.caption)
+                                .font(.body)
                                 .foregroundStyle(.red)
                         }
                     }
@@ -184,32 +185,33 @@ struct LockScreenLiveActivityView: View {
             }
 
             // Max leans
-            HStack(spacing: 12) {
-                HStack(spacing: 4) {
+            HStack(spacing: 16) {
+                HStack(spacing: 6) {
                     Image(systemName: "arrow.left")
-                        .font(.caption)
+                        .font(.title3)
                         .foregroundColor(.green)
                     Text(String(format: "%.0f°", context.state.maxLeanLeft))
-                        .font(.callout)
-                        .fontWeight(.semibold)
+                        .font(.title2)
+                        .fontWeight(.bold)
                         .foregroundColor(.green)
                         .monospacedDigit()
                         .contentTransition(.identity)
                 }
 
                 Text("MAX")
-                    .font(.caption)
+                    .font(.headline)
+                    .fontWeight(.bold)
                     .foregroundColor(.gray)
 
-                HStack(spacing: 4) {
+                HStack(spacing: 6) {
                     Text(String(format: "%.0f°", context.state.maxLeanRight))
-                        .font(.callout)
-                        .fontWeight(.semibold)
+                        .font(.title2)
+                        .fontWeight(.bold)
                         .foregroundColor(.red)
                         .monospacedDigit()
                         .contentTransition(.identity)
                     Image(systemName: "arrow.right")
-                        .font(.caption)
+                        .font(.title3)
                         .foregroundColor(.red)
                 }
             }
