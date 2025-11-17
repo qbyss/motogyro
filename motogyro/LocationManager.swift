@@ -120,16 +120,12 @@ class LocationManager: NSObject, ObservableObject {
 
     /// Start location and speed tracking
     func startTracking() {
-        guard CLLocationManager.locationServicesEnabled() else {
-            print("Location services are not enabled")
-            return
-        }
-
         // Request permission if needed
         if authorizationStatus == .notDetermined {
             requestPermission()
         }
 
+        // Start updates - system will handle gracefully if location services are disabled
         locationManager.startUpdatingLocation()
         locationManager.startUpdatingHeading()
     }
@@ -171,8 +167,8 @@ class LocationManager: NSObject, ObservableObject {
     // MARK: - Private Helpers
 
     private func updateLocationAvailability() {
-        isLocationAvailable = CLLocationManager.locationServicesEnabled() &&
-            (authorizationStatus == .authorizedWhenInUse || authorizationStatus == .authorizedAlways)
+        // If authorized, location is available. System handles location services state.
+        isLocationAvailable = (authorizationStatus == .authorizedWhenInUse || authorizationStatus == .authorizedAlways)
     }
 
     private func convertToKmh(_ speedInMetersPerSecond: Double) -> Double {
@@ -222,7 +218,8 @@ extension LocationManager: CLLocationManagerDelegate {
     }
 
     func locationManagerDidChangeAuthorization(_ manager: CLLocationManager) {
-        authorizationStatus = manager.authorizationStatus
+        // Use class property instead of instance property to avoid UI unresponsiveness
+        authorizationStatus = CLLocationManager.authorizationStatus
         updateLocationAvailability()
 
         // Automatically start tracking if authorized
