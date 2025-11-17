@@ -34,7 +34,7 @@ struct GyroscopeView: View {
                     isTracking: motionManager.isTrackingEnabled,
                     isLocationAvailable: locationManager.isLocationAvailable
                 )
-                .padding(.top, 20)
+                .padding(.top, 40)
 
                 Spacer()
                     .frame(height: 40)
@@ -55,8 +55,6 @@ struct GyroscopeView: View {
                 }
                 .frame(maxWidth: .infinity)
                 .padding(.horizontal, 20)
-
-                Spacer()
 
                 // Max lean display and buttons
                 VStack(spacing: 15) {
@@ -97,10 +95,24 @@ struct GyroscopeView: View {
                         liveActivityEnabled.toggle()
                     }) {
                         HStack(spacing: 8) {
+                            
+                            
                             Image(systemName: liveActivityEnabled ? "rectangle.inset.filled.and.person.filled" : "rectangle.inset.filled")
                                 .font(.system(size: 16, weight: .semibold))
                             Text(liveActivityEnabled ? "ISLAND ON" : "ISLAND OFF")
                                 .font(.system(size: 16, weight: .bold))
+                            
+                            // Settings cogwheel button
+                            Button(action: {
+                                showSpeedSettings.toggle()
+                            }) {
+                                Image(systemName: "gearshape.fill")
+                                    .font(.system(size: 20))
+                                    .foregroundColor(.white)
+                                    .padding(10)
+                                    .background(Color.gray)
+                                    .clipShape(Circle())
+                            }
                         }
                         .foregroundColor(.white)
                         .padding(.horizontal, 25)
@@ -108,20 +120,8 @@ struct GyroscopeView: View {
                         .background(liveActivityEnabled ? Color.green : Color.gray)
                         .cornerRadius(10)
                     }
-                    .padding(.top, 5)
 
-                    // Settings cogwheel button
-                    Button(action: {
-                        showSpeedSettings.toggle()
-                    }) {
-                        Image(systemName: "gearshape.fill")
-                            .font(.system(size: 20))
-                            .foregroundColor(.white)
-                            .padding(12)
-                            .background(Color.gray)
-                            .clipShape(Circle())
-                    }
-                    .padding(.top, 5)
+
                 }
             }
         }
