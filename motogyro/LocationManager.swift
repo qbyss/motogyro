@@ -70,7 +70,7 @@ class LocationManager: NSObject, ObservableObject {
         // Load saved preferences
         speedThreshold = UserDefaults.standard.double(forKey: "speedThreshold")
         if speedThreshold == 0 {
-            speedThreshold = 10.0 // Default to 10 km/h
+            speedThreshold = 30.0 // Default to 30 km/h
         }
 
         // Force metric by default for Europe
