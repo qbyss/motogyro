@@ -218,8 +218,8 @@ extension LocationManager: CLLocationManagerDelegate {
     }
 
     func locationManagerDidChangeAuthorization(_ manager: CLLocationManager) {
-        // Use class property instead of instance property to avoid UI unresponsiveness
-        authorizationStatus = CLLocationManager.authorizationStatus
+        // Use class method (iOS 14+) instead of instance property to avoid UI unresponsiveness
+        authorizationStatus = CLLocationManager.authorizationStatus()
         updateLocationAvailability()
 
         // Automatically start tracking if authorized
