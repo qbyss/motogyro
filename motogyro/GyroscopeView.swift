@@ -62,7 +62,7 @@ struct GyroscopeView: View {
                         maxLeanLeft: motionManager.maxLeanLeft,
                         maxLeanRight: motionManager.maxLeanRight
                     )
-
+                    
                     HStack(spacing: 20) {
                         Button(action: {
                             motionManager.calibrate()
@@ -75,7 +75,7 @@ struct GyroscopeView: View {
                                 .background(Color.blue)
                                 .cornerRadius(10)
                         }
-
+                        
                         Button(action: {
                             motionManager.resetMaxLeans()
                             locationManager.resetMaxSpeed()
@@ -89,37 +89,42 @@ struct GyroscopeView: View {
                                 .cornerRadius(10)
                         }
                     }
-
+                    
                     // Dynamic Island toggle button
-                    Button(action: {
-                        liveActivityEnabled.toggle()
-                    }) {
-                        HStack(spacing: 8) {
-                            
-                            
-                            Image(systemName: liveActivityEnabled ? "rectangle.inset.filled.and.person.filled" : "rectangle.inset.filled")
-                                .font(.system(size: 16, weight: .semibold))
-                            Text(liveActivityEnabled ? "ISLAND ON" : "ISLAND OFF")
-                                .font(.system(size: 16, weight: .bold))
-                            
-                            // Settings cogwheel button
-                            Button(action: {
-                                showSpeedSettings.toggle()
-                            }) {
-                                Image(systemName: "gearshape.fill")
-                                    .font(.system(size: 20))
-                                    .foregroundColor(.white)
-                                    .padding(10)
-                                    .background(Color.gray)
-                                    .clipShape(Circle())
+                    HStack() {
+                        
+                        
+                        Button(action: {
+                            liveActivityEnabled.toggle()
+                        }) {
+                            HStack(spacing: 8) {
+                                
+                                Image(systemName: liveActivityEnabled ? "rectangle.inset.filled.and.person.filled" : "rectangle.inset.filled")
+                                    .font(.system(size: 16, weight: .semibold))
+                                Text(liveActivityEnabled ? "ISLAND ON" : "ISLAND OFF")
+                                    .font(.system(size: 16, weight: .bold))
+                                
                             }
+                            .foregroundColor(.white)
+                            .padding(.horizontal, 25)
+                            .padding(.vertical, 12)
+                            .background(liveActivityEnabled ? Color.green : Color.gray)
+                            .cornerRadius(10)
                         }
-                        .foregroundColor(.white)
-                        .padding(.horizontal, 25)
-                        .padding(.vertical, 12)
-                        .background(liveActivityEnabled ? Color.green : Color.gray)
-                        .cornerRadius(10)
+                        // Settings cogwheel button
+                        Button(action: {
+                            showSpeedSettings.toggle()
+                        }) {
+                            Image(systemName: "gearshape.fill")
+                                .font(.system(size: 20))
+                                .foregroundColor(.white)
+                                .padding(10)
+                                .background(Color.gray)
+                                .clipShape(Circle())
+                        }
                     }
+
+                
 
 
                 }
@@ -699,7 +704,7 @@ struct SpeedSettingsView: View {
                     }
                 }
             }
-            .navigationTitle("GPS Settings")
+            .navigationTitle("Settings")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .navigationBarTrailing) {
