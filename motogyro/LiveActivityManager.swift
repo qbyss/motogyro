@@ -16,6 +16,12 @@ class LiveActivityManager: ObservableObject {
     private var lastUpdateTime: Date?
     private let updateInterval: TimeInterval = 1.0 // Update at most once per second
 
+    // Check if activity is actually running (not just our flag)
+    var isActivityReallyActive: Bool {
+        guard let activity = currentActivity else { return false }
+        return activity.activityState == .active
+    }
+
     // Start the Live Activity
     func startActivity() {
         print("📱 startActivity() called")
