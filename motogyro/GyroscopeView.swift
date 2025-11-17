@@ -92,6 +92,24 @@ struct GyroscopeView: View {
                         }
                     }
 
+                    // Dynamic Island toggle button
+                    Button(action: {
+                        liveActivityEnabled.toggle()
+                    }) {
+                        HStack(spacing: 8) {
+                            Image(systemName: liveActivityEnabled ? "rectangle.inset.filled.and.person.filled" : "rectangle.inset.filled")
+                                .font(.system(size: 16, weight: .semibold))
+                            Text(liveActivityEnabled ? "ISLAND ON" : "ISLAND OFF")
+                                .font(.system(size: 16, weight: .bold))
+                        }
+                        .foregroundColor(.white)
+                        .padding(.horizontal, 25)
+                        .padding(.vertical, 12)
+                        .background(liveActivityEnabled ? Color.green : Color.gray)
+                        .cornerRadius(10)
+                    }
+                    .padding(.top, 5)
+
                     // Settings cogwheel button
                     Button(action: {
                         showSpeedSettings.toggle()
@@ -103,7 +121,7 @@ struct GyroscopeView: View {
                             .background(Color.gray)
                             .clipShape(Circle())
                     }
-                    .padding(.top, 10)
+                    .padding(.top, 5)
                 }
             }
         }
