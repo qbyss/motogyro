@@ -255,7 +255,6 @@ struct HorizonSphere3DView: UIViewRepresentable {
         let sceneView = SCNView()
         sceneView.backgroundColor = .clear
         sceneView.allowsCameraControl = false
-        sceneView.autoenablesDefaultLighting = true
         sceneView.antialiasingMode = .multisampling4X
 
         // Create scene
@@ -273,41 +272,30 @@ struct HorizonSphere3DView: UIViewRepresentable {
         sphereContainer.name = "sphereContainer"
         scene.rootNode.addChildNode(sphereContainer)
 
-        // Create sphere with two hemispheres
+        // Create sphere with gradient texture
         let sphere = SCNSphere(radius: 1.5)
+        sphere.segmentCount = 96
+
+        // Create a gradient image for the sphere texture
+        let textureImage = createHorizonTexture()
+
+        let sphereMaterial = SCNMaterial()
+        sphereMaterial.diffuse.contents = textureImage
+        sphereMaterial.isDoubleSided = false
+        sphereMaterial.lightingModel = .blinn
+
+        sphere.materials = [sphereMaterial]
+
         let sphereNode = SCNNode(geometry: sphere)
-
-        // Create materials for sky and ground
-        let skyMaterial = SCNMaterial()
-        skyMaterial.diffuse.contents = UIColor(red: 0.3, green: 0.6, blue: 1.0, alpha: 1.0)
-        skyMaterial.specular.contents = UIColor.white
-        skyMaterial.shininess = 0.3
-
-        let groundMaterial = SCNMaterial()
-        groundMaterial.diffuse.contents = UIColor(red: 0.2, green: 0.7, blue: 0.3, alpha: 1.0)
-        groundMaterial.specular.contents = UIColor.white
-        groundMaterial.shininess = 0.3
-
-        sphere.materials = [skyMaterial]
         sphereContainer.addChildNode(sphereNode)
-
-        // Create ground hemisphere (lower half)
-        let groundHemisphere = SCNSphere(radius: 1.51) // Slightly larger to prevent z-fighting
-        groundHemisphere.segmentCount = 48
-        let groundNode = SCNNode(geometry: groundHemisphere)
-        groundNode.geometry?.materials = [groundMaterial]
-
-        // Clip the ground hemisphere to show only bottom half
-        groundNode.position = SCNVector3(x: 0, y: -0.75, z: 0)
-        groundNode.scale = SCNVector3(x: 1, y: 0.5, z: 1)
-        sphereContainer.addChildNode(groundNode)
 
         // Create horizon line (equator)
         let horizonTorus = SCNTorus(ringRadius: 1.52, pipeRadius: 0.015)
         let horizonNode = SCNNode(geometry: horizonTorus)
         let horizonMaterial = SCNMaterial()
         horizonMaterial.diffuse.contents = UIColor.white
-        horizonMaterial.emission.contents = UIColor.white.withAlphaComponent(0.3)
+        horizonMaterial.emission.contents = UIColor.white
+        horizonMaterial.lightingModel = .constant
         horizonTorus.materials = [horizonMaterial]
         horizonNode.eulerAngles = SCNVector3(x: .pi / 2, y: 0, z: 0)
         sphereContainer.addChildNode(horizonNode)
@@ -319,7 +307,7 @@ struct HorizonSphere3DView: UIViewRepresentable {
         let ambientLight = SCNNode()
         ambientLight.light = SCNLight()
         ambientLight.light?.type = .ambient
-        ambientLight.light?.color = UIColor(white: 0.8, alpha: 1.0)
+        ambientLight.light?.color = UIColor(white: 0.9, alpha: 1.0)
         scene.rootNode.addChildNode(ambientLight)
 
         // Add directional light
@@ -327,11 +315,37 @@ struct HorizonSphere3DView: UIViewRepresentable {
         directionalLight.light = SCNLight()
         directionalLight.light?.type = .directional
         directionalLight.light?.color = UIColor.white
+        directionalLight.light?.intensity = 500
         directionalLight.position = SCNVector3(x: 0, y: 5, z: 5)
         directionalLight.look(at: SCNVector3(x: 0, y: 0, z: 0))
         scene.rootNode.addChildNode(directionalLight)
 
         return sceneView
+    }
+
+    private func createHorizonTexture() -> UIImage {
+        let size = CGSize(width: 512, height: 512)
+        let renderer = UIGraphicsImageRenderer(size: size)
+
+        return renderer.image { context in
+            // Draw sky (top half)
+            let skyColor = UIColor(red: 0.3, green: 0.6, blue: 1.0, alpha: 1.0)
+            skyColor.setFill()
+            context.fill(CGRect(x: 0, y: 0, width: size.width, height: size.height / 2))
+
+            // Draw ground (bottom half)
+            let groundColor = UIColor(red: 0.2, green: 0.7, blue: 0.3, alpha: 1.0)
+            groundColor.setFill()
+            context.fill(CGRect(x: 0, y: size.height / 2, width: size.width, height: size.height / 2))
+
+            // Draw horizon line
+            UIColor.white.setStroke()
+            let linePath = UIBezierPath()
+            linePath.move(to: CGPoint(x: 0, y: size.height / 2))
+            linePath.addLine(to: CGPoint(x: size.width, y: size.height / 2))
+            linePath.lineWidth = 3
+            linePath.stroke()
+        }
     }
 
     func updateUIView(_ sceneView: SCNView, context: Context) {
@@ -367,7 +381,8 @@ struct HorizonSphere3DView: UIViewRepresentable {
 
             let markMaterial = SCNMaterial()
             markMaterial.diffuse.contents = UIColor.white
-            markMaterial.emission.contents = UIColor.white.withAlphaComponent(0.2)
+            markMaterial.emission.contents = UIColor.white
+            markMaterial.lightingModel = .constant
             markTorus.materials = [markMaterial]
 
             markNode.position = SCNVector3(x: 0, y: y, z: 0)
