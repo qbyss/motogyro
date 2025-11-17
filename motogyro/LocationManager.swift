@@ -95,7 +95,7 @@ class LocationManager: NSObject, ObservableObject {
         locationManager.desiredAccuracy = kCLLocationAccuracyBestForNavigation
         locationManager.activityType = .automotiveNavigation
         locationManager.distanceFilter = kCLDistanceFilterNone // Get all updates
-        locationManager.allowsBackgroundLocationUpdates = true
+        locationManager.allowsBackgroundLocationUpdates = false // Only enable when Live Activity is active
         locationManager.pausesLocationUpdatesAutomatically = false
         locationManager.showsBackgroundLocationIndicator = true
 
@@ -140,6 +140,18 @@ class LocationManager: NSObject, ObservableObject {
     func stopTracking() {
         locationManager.stopUpdatingLocation()
         locationManager.stopUpdatingHeading()
+    }
+
+    /// Enable background location updates (for Live Activity)
+    func enableBackgroundUpdates() {
+        locationManager.allowsBackgroundLocationUpdates = true
+        print("📍 Background location updates enabled")
+    }
+
+    /// Disable background location updates
+    func disableBackgroundUpdates() {
+        locationManager.allowsBackgroundLocationUpdates = false
+        print("📍 Background location updates disabled")
     }
 
     /// Reset max speed

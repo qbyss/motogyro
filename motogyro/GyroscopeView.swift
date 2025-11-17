@@ -128,6 +128,7 @@ struct GyroscopeView: View {
 
             // Start Live Activity if enabled
             if liveActivityEnabled {
+                locationManager.enableBackgroundUpdates()
                 liveActivityManager.startActivity()
             }
         }
@@ -144,9 +145,11 @@ struct GyroscopeView: View {
         .onChange(of: liveActivityEnabled) { _, newValue in
             UserDefaults.standard.set(newValue, forKey: "liveActivityEnabled")
             if newValue {
+                locationManager.enableBackgroundUpdates()
                 liveActivityManager.startActivity()
                 updateLiveActivity()
             } else {
+                locationManager.disableBackgroundUpdates()
                 liveActivityManager.stopActivity()
             }
         }
