@@ -99,9 +99,7 @@ class LocationManager: NSObject, ObservableObject {
         locationManager.pausesLocationUpdatesAutomatically = false
         locationManager.showsBackgroundLocationIndicator = true
 
-        // Check initial authorization status
-        authorizationStatus = locationManager.authorizationStatus
-        updateLocationAvailability()
+        // Authorization status will be updated via locationManagerDidChangeAuthorization delegate callback
     }
 
     // MARK: - Public Methods
