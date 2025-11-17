@@ -151,12 +151,20 @@ struct GyroscopeView: View {
             }
         }
         .onChange(of: scenePhase) { _, newPhase in
-            if newPhase == .background && liveActivityEnabled {
-                // If activity was dismissed from lock screen, restart it
-                if !liveActivityManager.isActivityReallyActive {
-                    liveActivityManager.startActivity()
+            if newPhase == .background {
+                if liveActivityEnabled {
+                    // If activity was dismissed from lock screen, restart it
+                    if !liveActivityManager.isActivityReallyActive {
+                        liveActivityManager.startActivity()
+                    }
+                    updateLiveActivity()
+                } else {
+                    // Stop GPS when app goes to background if Live Activity is not enabled
+                    locationManager.stopTracking()
                 }
-                updateLiveActivity()
+            } else if newPhase == .active {
+                // Restart GPS when app comes back to foreground
+                locationManager.startTracking()
             }
         }
     }
