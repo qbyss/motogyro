@@ -152,6 +152,10 @@ struct GyroscopeView: View {
         }
         .onChange(of: scenePhase) { _, newPhase in
             if newPhase == .background && liveActivityEnabled {
+                // If activity was dismissed from lock screen, restart it
+                if !liveActivityManager.isActivityActive {
+                    liveActivityManager.startActivity()
+                }
                 updateLiveActivity()
             }
         }
