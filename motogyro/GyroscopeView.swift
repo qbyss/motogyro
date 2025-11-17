@@ -7,6 +7,7 @@
 
 import SwiftUI
 import CoreLocation
+import SceneKit
 
 struct GyroscopeView: View {
     @StateObject private var motionManager = MotionManager()
@@ -226,53 +227,9 @@ struct HorizonSphereView: View {
             let size = min(geometry.size.width, geometry.size.height)
 
             ZStack {
-                // Sky and ground hemispheres with graduations
-                ZStack {
-                    // Sky (blue) - top half
-                    Circle()
-                        .fill(
-                            LinearGradient(
-                                gradient: Gradient(colors: [Color.blue.opacity(0.8), Color.cyan.opacity(0.6)]),
-                                startPoint: .top,
-                                endPoint: .center
-                            )
-                        )
-                        .frame(width: size * 0.95, height: size * 0.95)
-                        .mask(
-                            Rectangle()
-                                .frame(width: size, height: size / 2)
-                                .offset(y: -size / 4)
-                        )
-
-                    // Ground (green) - bottom half
-                    Circle()
-                        .fill(
-                            LinearGradient(
-                                gradient: Gradient(colors: [Color.green.opacity(0.6), Color.green.opacity(0.8)]),
-                                startPoint: .center,
-                                endPoint: .bottom
-                            )
-                        )
-                        .frame(width: size * 0.95, height: size * 0.95)
-                        .mask(
-                            Rectangle()
-                                .frame(width: size, height: size / 2)
-                                .offset(y: size / 4)
-                        )
-
-                    // Horizon line
-                    Rectangle()
-                        .fill(Color.white)
-                        .frame(width: size * 0.95, height: 3)
-
-                    // Horizon graduation marks - horizontal lines at different Y positions
-                    ForEach([-80, -50, -20, 20, 50, 80], id: \.self) { yOffset in
-                        HorizonGraduationMark(yOffset: yOffset, size: size)
-                    }
-                }
-                .rotationEffect(.degrees(-rollAngle)) // Counter-rotate to keep level
-                .clipShape(Circle())
-                .frame(width: size * 0.95, height: size * 0.95)
+                // 3D Sphere View
+                HorizonSphere3DView(rollAngle: rollAngle, colorScheme: colorScheme)
+                    .frame(width: size * 0.95, height: size * 0.95)
 
                 // Fixed airplane symbol (stays centered, doesn't rotate)
                 AirplaneSymbol()
@@ -285,6 +242,138 @@ struct HorizonSphereView: View {
             }
             .frame(width: size, height: size)
             .position(x: geometry.size.width / 2, y: geometry.size.height / 2)
+        }
+    }
+}
+
+// MARK: - 3D SceneKit Horizon Sphere
+struct HorizonSphere3DView: UIViewRepresentable {
+    let rollAngle: Double
+    let colorScheme: ColorScheme
+
+    func makeUIView(context: Context) -> SCNView {
+        let sceneView = SCNView()
+        sceneView.backgroundColor = .clear
+        sceneView.allowsCameraControl = false
+        sceneView.autoenablesDefaultLighting = true
+        sceneView.antialiasingMode = .multisampling4X
+
+        // Create scene
+        let scene = SCNScene()
+        sceneView.scene = scene
+
+        // Create camera
+        let cameraNode = SCNNode()
+        cameraNode.camera = SCNCamera()
+        cameraNode.position = SCNVector3(x: 0, y: 0, z: 5)
+        scene.rootNode.addChildNode(cameraNode)
+
+        // Create the main sphere node that will rotate
+        let sphereContainer = SCNNode()
+        sphereContainer.name = "sphereContainer"
+        scene.rootNode.addChildNode(sphereContainer)
+
+        // Create sphere with two hemispheres
+        let sphere = SCNSphere(radius: 1.5)
+        let sphereNode = SCNNode(geometry: sphere)
+
+        // Create materials for sky and ground
+        let skyMaterial = SCNMaterial()
+        skyMaterial.diffuse.contents = UIColor(red: 0.3, green: 0.6, blue: 1.0, alpha: 1.0)
+        skyMaterial.specular.contents = UIColor.white
+        skyMaterial.shininess = 0.3
+
+        let groundMaterial = SCNMaterial()
+        groundMaterial.diffuse.contents = UIColor(red: 0.2, green: 0.7, blue: 0.3, alpha: 1.0)
+        groundMaterial.specular.contents = UIColor.white
+        groundMaterial.shininess = 0.3
+
+        sphere.materials = [skyMaterial]
+        sphereContainer.addChildNode(sphereNode)
+
+        // Create ground hemisphere (lower half)
+        let groundHemisphere = SCNSphere(radius: 1.51) // Slightly larger to prevent z-fighting
+        groundHemisphere.segmentCount = 48
+        let groundNode = SCNNode(geometry: groundHemisphere)
+        groundNode.geometry?.materials = [groundMaterial]
+
+        // Clip the ground hemisphere to show only bottom half
+        groundNode.position = SCNVector3(x: 0, y: -0.75, z: 0)
+        groundNode.scale = SCNVector3(x: 1, y: 0.5, z: 1)
+        sphereContainer.addChildNode(groundNode)
+
+        // Create horizon line (equator)
+        let horizonTorus = SCNTorus(ringRadius: 1.52, pipeRadius: 0.015)
+        let horizonNode = SCNNode(geometry: horizonTorus)
+        let horizonMaterial = SCNMaterial()
+        horizonMaterial.diffuse.contents = UIColor.white
+        horizonMaterial.emission.contents = UIColor.white.withAlphaComponent(0.3)
+        horizonTorus.materials = [horizonMaterial]
+        horizonNode.eulerAngles = SCNVector3(x: .pi / 2, y: 0, z: 0)
+        sphereContainer.addChildNode(horizonNode)
+
+        // Add graduation marks
+        addGraduationMarks(to: sphereContainer)
+
+        // Add ambient light
+        let ambientLight = SCNNode()
+        ambientLight.light = SCNLight()
+        ambientLight.light?.type = .ambient
+        ambientLight.light?.color = UIColor(white: 0.8, alpha: 1.0)
+        scene.rootNode.addChildNode(ambientLight)
+
+        // Add directional light
+        let directionalLight = SCNNode()
+        directionalLight.light = SCNLight()
+        directionalLight.light?.type = .directional
+        directionalLight.light?.color = UIColor.white
+        directionalLight.position = SCNVector3(x: 0, y: 5, z: 5)
+        directionalLight.look(at: SCNVector3(x: 0, y: 0, z: 0))
+        scene.rootNode.addChildNode(directionalLight)
+
+        return sceneView
+    }
+
+    func updateUIView(_ sceneView: SCNView, context: Context) {
+        guard let sphereContainer = sceneView.scene?.rootNode.childNode(withName: "sphereContainer", recursively: false) else {
+            return
+        }
+
+        // Rotate the sphere based on roll angle (around Z axis)
+        // Negative to counter-rotate (make it appear stable while device rotates)
+        SCNTransaction.begin()
+        SCNTransaction.animationDuration = 0.1
+        sphereContainer.eulerAngles = SCNVector3(x: 0, y: 0, z: Float(-rollAngle * .pi / 180))
+        SCNTransaction.commit()
+
+        // Update background based on color scheme
+        sceneView.backgroundColor = colorScheme == .dark ? .black : .white
+    }
+
+    private func addGraduationMarks(to container: SCNNode) {
+        let radius: Float = 1.53
+        let angles: [Float] = [-60, -45, -30, -15, 15, 30, 45, 60]
+
+        for angle in angles {
+            let angleRad = angle * .pi / 180
+            let y = sin(angleRad) * radius
+            let ringRadius = cos(angleRad) * radius
+
+            // Create graduation line (small torus)
+            let isMainMark = abs(angle).truncatingRemainder(dividingBy: 30) == 0
+            let lineThickness: CGFloat = isMainMark ? 0.012 : 0.008
+            let markTorus = SCNTorus(ringRadius: CGFloat(ringRadius), pipeRadius: lineThickness)
+            let markNode = SCNNode(geometry: markTorus)
+
+            let markMaterial = SCNMaterial()
+            markMaterial.diffuse.contents = UIColor.white
+            markMaterial.emission.contents = UIColor.white.withAlphaComponent(0.2)
+            markTorus.materials = [markMaterial]
+
+            markNode.position = SCNVector3(x: 0, y: y, z: 0)
+            markNode.eulerAngles = SCNVector3(x: .pi / 2, y: 0, z: 0)
+
+            container.addChildNode(markNode)
         }
     }
 }
