@@ -532,7 +532,7 @@
 				CODE_SIGN_ENTITLEMENTS = motogyro/motogyro.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = 6L677X9XR2;
+				DEVELOPMENT_TEAM = 4ATBLB493Z;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = motogyro/Info.plist;
@@ -570,7 +570,7 @@
 				CODE_SIGN_ENTITLEMENTS = motogyro/motogyro.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = 6L677X9XR2;
+				DEVELOPMENT_TEAM = 4ATBLB493Z;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = motogyro/Info.plist;
@@ -688,7 +688,7 @@
 				CODE_SIGN_ENTITLEMENTS = MotoGyroWidgetExtension.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = 6L677X9XR2;
+				DEVELOPMENT_TEAM = 4ATBLB493Z;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = MotoGyroWidget/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = MotoGyroWidget;
@@ -701,7 +701,7 @@
 					"@executable_path/../../Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = net.spher.motogyro.MotoGyroWidget;
+				PRODUCT_BUNDLE_IDENTIFIER = net.spher.motogyro.Motogyro2;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 				STRING_CATALOG_GENERATE_SYMBOLS = YES;
@@ -721,7 +721,7 @@
 				CODE_SIGN_ENTITLEMENTS = MotoGyroWidgetExtension.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = 6L677X9XR2;
+				DEVELOPMENT_TEAM = 4ATBLB493Z;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = MotoGyroWidget/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = MotoGyroWidget;
@@ -734,7 +734,7 @@
 					"@executable_path/../../Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = net.spher.motogyro.MotoGyroWidget;
+				PRODUCT_BUNDLE_IDENTIFIER = net.spher.motogyro.Motogyro2;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 				STRING_CATALOG_GENERATE_SYMBOLS = YES;
